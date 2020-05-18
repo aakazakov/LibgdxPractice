@@ -1,15 +1,13 @@
 package com.dune.game.desktop;
 
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.backends.lwjgl3.*;
 import com.dune.game.DuneGame;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
-		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.width = 1280;
-		config.height = 720;
+		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
+		config.setWindowedMode(1280, 720);
 //		config.foregroundFPS = 1;
-		new LwjglApplication(new DuneGame(), config);
+		new Lwjgl3Application(new DuneGame(), config);
 	}
 }
