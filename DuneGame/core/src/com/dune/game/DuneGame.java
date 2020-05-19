@@ -76,6 +76,10 @@ public class DuneGame extends ApplicationAdapter {
     public void render(SpriteBatch batch) {
       batch.draw(texture, position.x - 40, position.y - 40, 40, 40, 80, 80, 1, 1, 0, 0, 0, 80, 80, false, false);
     }
+    
+    public void dispose() {
+      texture.dispose();
+    }
   }
 
   private SpriteBatch batch;
@@ -110,6 +114,7 @@ public class DuneGame extends ApplicationAdapter {
   public void dispose() {
     batch.dispose();
     tank.dispose();
+    circle.dispose();
   }
 
 }
