@@ -1,15 +1,9 @@
 package com.dune.game;
 
-import java.util.Random;
-
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.*;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.*;
 
 public class DuneGame extends ApplicationAdapter {
   private static class Tank {
@@ -20,7 +14,7 @@ public class DuneGame extends ApplicationAdapter {
 
     public Tank(float x, float y) {
       this.position = new Vector2(x, y);
-      this.texture = new Texture("tank1.png");
+      this.texture = new Texture("tank.png");
       this.speed = 200.0f;
     }
 
@@ -32,8 +26,15 @@ public class DuneGame extends ApplicationAdapter {
         angle -= 180.0f * dt;
       }
       if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-        position.x += speed * MathUtils.cosDeg(angle) * dt;
-        position.y += speed * MathUtils.sinDeg(angle) * dt;
+        float stepX = speed * MathUtils.cosDeg(angle) * dt;
+        float stepY = speed * MathUtils.sinDeg(angle) * dt;
+        
+        if (position.x + stepX > 40.0f && position.x + stepX < 1240.0f) {
+          position.x += stepX;
+        }
+        if (position.y + stepY > 40.0f && position.y + stepY < 680.0f) {
+          position.y += stepY;
+        }
       }
     }
 
@@ -64,12 +65,12 @@ public class DuneGame extends ApplicationAdapter {
     private boolean isTouched(Tank tank) {
       float deltaX = Math.abs(tank.position.x - this.position.x);
       float deltaY = Math.abs(tank.position.y - this.position.y);
-      return deltaX < 65 && deltaY < 65;
+      return deltaX < 65.0f && deltaY < 65.0f;
     }
     
     private void setRandomPosition() {
-      position.x = MathUtils.random(40f, 1241f);;
-      position.y = MathUtils.random(40f, 681f);
+      position.x = MathUtils.random(40.0f, 1241.0f);
+      position.y = MathUtils.random(40.0f, 681.0f);
     }
 
     public void render(SpriteBatch batch) {
