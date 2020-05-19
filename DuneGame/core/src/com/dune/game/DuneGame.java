@@ -36,7 +36,8 @@ public class DuneGame extends ApplicationAdapter {
         }
 
         public void render(SpriteBatch batch) {
-            batch.draw(texture, position.x - 40, position.y - 40, 40, 40, 80, 80, 1, 1, angle, 0, 0, 80, 80, false, false);
+            batch.draw(texture, position.x - 40, position.y - 40,
+                40, 40, 80, 80, 1, 1, angle, 0, 0, 80, 80, false, false);
         }
 
         public void dispose() {
@@ -74,8 +75,4 @@ public class DuneGame extends ApplicationAdapter {
         tank.dispose();
     }
 
-    // Домашнее задание:
-    // - Задать координаты точки, и нарисовать в ней круг (любой круг, радиусом пикселей 50)
-    // - Если "танк" подъедет вплотную к кругу, то круг должен переместиться в случайную точку
-    // - * Нельзя давать танку заезжать за экран
 }
