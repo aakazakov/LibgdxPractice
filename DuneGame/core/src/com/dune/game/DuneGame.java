@@ -44,14 +44,39 @@ public class DuneGame extends ApplicationAdapter {
             texture.dispose();
         }
     }
+    
+    private static class Circle {
+      private Vector2 position;
+      private Texture texture;
+      
+      public Circle(float x, float y) {
+        this.position = new Vector2(x, y);
+        this.texture = new Texture("smile.png");
+      }
+      
+      public void update() {
+        // TODO something)
+      }
+      
+      public void render(SpriteBatch batch) {
+        batch.draw(texture, position.x - 40, position.y - 40,
+            40, 40, 80, 80, 1, 1, 0, 0, 0, 80, 80, false, false);
+      }
+      
+      public void dispose() {
+        texture.dispose();
+      }
+    }
 
     private SpriteBatch batch;
-    private Tank tank;
+    private Tank tank;  
+    private Circle circle; 
 
     @Override
     public void create() {
         batch = new SpriteBatch();
-        tank = new Tank(200, 200);
+        tank = new Tank(200, 200);       
+        circle = new Circle(400, 400);
     }
 
     @Override
@@ -62,6 +87,7 @@ public class DuneGame extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         tank.render(batch);
+        circle.render(batch);
         batch.end();
     }
 
