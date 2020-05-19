@@ -49,7 +49,6 @@ public class DuneGame extends ApplicationAdapter {
   private static class Circle {
     private Vector2 position = new Vector2();
     private Texture texture;
-    private Random random = new Random();
 
     public Circle() {
       setRandomPosition();
@@ -69,18 +68,12 @@ public class DuneGame extends ApplicationAdapter {
     }
     
     private void setRandomPosition() {
-      float x = (float) random.nextInt(1241);
-      float y = (float) random.nextInt(681);
-      position.x = x > 40f ? x : 40f;
-      position.y = y > 40f ? y : 40f;
+      position.x = MathUtils.random(40f, 1241f);;
+      position.y = MathUtils.random(40f, 681f);
     }
 
     public void render(SpriteBatch batch) {
       batch.draw(texture, position.x - 40, position.y - 40, 40, 40, 80, 80, 1, 1, 0, 0, 0, 80, 80, false, false);
-    }
-
-    public void dispose() {
-      texture.dispose();
     }
   }
 
