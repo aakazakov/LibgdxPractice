@@ -63,9 +63,7 @@ public class DuneGame extends ApplicationAdapter {
     }
     
     private boolean isTouched(Tank tank) {
-      float deltaX = Math.abs(tank.position.x - this.position.x);
-      float deltaY = Math.abs(tank.position.y - this.position.y);
-      return deltaX < 65.0f && deltaY < 65.0f;
+      return this.position.cpy().sub(tank.position).len() < 65.0f;
     }
     
     private void setRandomPosition() {
