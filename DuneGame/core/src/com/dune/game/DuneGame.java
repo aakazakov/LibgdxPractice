@@ -1,5 +1,7 @@
 package com.dune.game;
 
+import java.util.Random;
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -18,7 +20,7 @@ public class DuneGame extends ApplicationAdapter {
 
     public Tank(float x, float y) {
       this.position = new Vector2(x, y);
-      this.texture = new Texture("tank.png");
+      this.texture = new Texture("tank1.png");
       this.speed = 200.0f;
     }
 
@@ -45,16 +47,32 @@ public class DuneGame extends ApplicationAdapter {
   }
 
   private static class Circle {
-    private Vector2 position;
+    private Vector2 position = new Vector2();
     private Texture texture;
+    private Random random = new Random();
 
-    public Circle(float x, float y) {
-      this.position = new Vector2(x, y);
+    public Circle() {
+      setRandomPosition();
       this.texture = new Texture("smile.png");
     }
 
-    public void update(float dt) {
-      position.x += 3f * dt;
+    public void update(Tank tank) {
+      if (isTouched(tank)) {
+        setRandomPosition();
+      }
+    }
+    
+    private boolean isTouched(Tank tank) {
+      float deltaX = Math.abs(tank.position.x - this.position.x);
+      float deltaY = Math.abs(tank.position.y - this.position.y);
+      return deltaX < 65 && deltaY < 65;
+    }
+    
+    private void setRandomPosition() {
+      float x = (float) random.nextInt(1241);
+      float y = (float) random.nextInt(681);
+      position.x = x > 40f ? x : 40f;
+      position.y = y > 40f ? y : 40f;
     }
 
     public void render(SpriteBatch batch) {
@@ -74,7 +92,7 @@ public class DuneGame extends ApplicationAdapter {
   public void create() {
     batch = new SpriteBatch();
     tank = new Tank(200, 200);
-    circle = new Circle(400, 400);
+    circle = new Circle();
   }
 
   @Override
@@ -91,7 +109,7 @@ public class DuneGame extends ApplicationAdapter {
 
   public void update(float dt) {
     tank.update(dt);
-    circle.update(dt);
+    circle.update(tank);
   }
 
   @Override
