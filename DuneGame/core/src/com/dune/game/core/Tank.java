@@ -35,9 +35,7 @@ public class Tank {
       position.add(speed * MathUtils.cosDeg(angle) * dt, speed * MathUtils.sinDeg(angle) * dt);
       moveTimer += dt;      
     } else {
-      if (getCurrentFrameIndex() != 0) {
-        moveTimer += dt;
-      }
+      moveTimer = 0;
     }
     checkBounds();
   }
