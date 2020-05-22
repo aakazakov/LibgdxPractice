@@ -15,6 +15,5 @@ public class BattleMap {
         batch.draw(grassTexture, i * 80, j * 80);
       }
     }
-  }
-  
+  }  
 }
