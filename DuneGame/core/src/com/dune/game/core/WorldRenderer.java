@@ -19,7 +19,6 @@ public class WorldRenderer {
     batch.begin();
     gameController.getMap().render(batch);
     gameController.getTank().render(batch);
-    gameController.getBullet().render(batch);
     batch.end();
   }
 }
