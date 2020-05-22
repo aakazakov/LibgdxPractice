@@ -1,11 +1,12 @@
 package com.dune.game.screens;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dune.game.core.*;
 
 public class GameScreen extends AbstractScreen {
   private SpriteBatch batch;
   private GameController gameController;
-  private WorldRenderer worldRendere;
+  private WorldRenderer worldRenderer;
   
   public GameScreen(SpriteBatch batch) {
     this.batch = batch;
@@ -14,16 +15,16 @@ public class GameScreen extends AbstractScreen {
   @Override
   public void show() {
     this.gameController = new GameController();
-    this.worldRendere = new WorldRendere(batch, gameController);
+    this.worldRenderer = new WorldRenderer(batch, gameController);
   }
 
   @Override
   public void render(float delta) {
     gameController.update(delta);
-    worldRendere.render();
+    worldRenderer.render();
   }
 
   @Override
   public void dispose() { }
-
+  
 }
