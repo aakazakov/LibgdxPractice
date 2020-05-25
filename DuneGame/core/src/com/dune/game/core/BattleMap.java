@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.g2d.*;
 public class BattleMap {
   TextureRegion grassTexture;
   
-  public BattleMap(TextureAtlas atlas) {
-    this.grassTexture = atlas.findRegion("grass");
+  public BattleMap() {
+    this.grassTexture = Assets.getInstance().getAtlas().findRegion("grass");
   }
   
   public void render(SpriteBatch batch) {
