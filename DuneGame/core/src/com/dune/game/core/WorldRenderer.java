@@ -6,19 +6,20 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class WorldRenderer {
   private SpriteBatch batch;
-  private GameController gameController;
+  private GameController gc;
   
-  public WorldRenderer(SpriteBatch batch, GameController gameController) {
+  public WorldRenderer(SpriteBatch batch, GameController gc) {
     this.batch = batch;
-    this.gameController = gameController;
+    this.gc = gc;
   }
   
   public void render() {
     Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1);
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     batch.begin();
-    gameController.getMap().render(batch);
-    gameController.getTank().render(batch);
+    gc.getMap().render(batch);
+    gc.getTank().render(batch);
+    gc.getProjectilesController();
     batch.end();
   }
 }
