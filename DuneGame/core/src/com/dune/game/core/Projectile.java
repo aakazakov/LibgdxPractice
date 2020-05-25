@@ -3,42 +3,46 @@ package com.dune.game.core;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.*;
 
-public class Projectile {
-  private Vector2 position;
-  private Vector2 velocity;
+public class Projectile extends GameObject implements Poolable {
   private TextureRegion texture;
+  private Vector2 velocity;
+  private float speed;
+  private float angle;
+  private boolean active;
   
-  public Projectile(TextureAtlas atlas) {
-    this.texture = atlas.findRegion("bullet");
-    this.position = new Vector2(-20.0f, 0.0f);
-    this.velocity = new Vector2();
+  
+  public Projectile(GameController gc) {
+    super(gc);
+    this.position = new Vector2();
+    this.speed = 320.0f;
   }
   
-  public void setLaunchPosition(Vector2 origin, float angle) {
-    if (position.x > 0) return;
-    position.set(1.0f, 0.0f).rotate(angle).scl(30).add(origin);
-    setVelocity(angle);
+  public void setup(Vector2 startPosition, float angle, TextureRegion texture) {
+    this.texture = texture;
+    this.position.set(startPosition);
+    this.angle = angle;
+    this.velocity.set(speed * MathUtils.cosDeg(angle), speed * MathUtils.sinDeg(angle));
+    this.active = true;
   }
-  
-  public void setVelocity(float angle) {
-    velocity.set(100.0f * MathUtils.cosDeg(angle), 100.0f * MathUtils.sinDeg(angle));
+
+  @Override
+  public boolean isActive() {
+    return active;
   }
   
   public void update(float dt) {
-    setWaitPosition();
     position.mulAdd(velocity, dt);
-  }
-  
-  private void setWaitPosition() {
-    if (position.x < 0.0f ||
-        position.x > 1280.0f ||
-        position.y < 0.0f ||
-        position.y > 720.0f) {
-      position.set(-20.0f, 0.0f);
+    if (position.x < 0 || position.x > 720 || position.y < 0  || position.y > 1280) {
+      deactivate();
     }
   }
   
+  public void deactivate() {
+    active = false;
+  }
+  
   public void render(SpriteBatch batch) {
-    batch.draw(texture, position.x, position.y);
-  } 
+    batch.draw(texture, position.x - 8, position.y - 8);
+  }
+  
 }
