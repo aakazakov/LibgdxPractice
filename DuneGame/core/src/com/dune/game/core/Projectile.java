@@ -13,7 +13,7 @@ public class Projectile extends GameObject implements Poolable {
   
   public Projectile(GameController gc) {
     super(gc);
-    this.position = new Vector2();
+    this.velocity = new Vector2();
     this.speed = 320.0f;
   }
   
@@ -32,7 +32,7 @@ public class Projectile extends GameObject implements Poolable {
   
   public void update(float dt) {
     position.mulAdd(velocity, dt);
-    if (position.x < 0 || position.x > 720 || position.y < 0  || position.y > 1280) {
+    if (position.x < 0 || position.x > 1280 || position.y < 0  || position.y > 720) {
       deactivate();
     }
   }
