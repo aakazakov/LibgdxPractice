@@ -47,4 +47,14 @@ public class BattleMap {
     return MathUtils.random(10);
   }
   
+  public void resourceFound(Vector2 gameObj) {
+    for (int i = 0; i < 16; i++) {
+      for (int j = 0; j < 9; j++) {
+        if (resourceMap[i][j] && gameObj.dst(40 + (i * 80.0f - 40.0f), 40 + (j * 80.0f - 40.0f)) < 90.0f) {
+          resourceMap[i][j] = false;
+        } 
+      }
+    }
+  }
+  
 }
