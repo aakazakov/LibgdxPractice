@@ -7,51 +7,46 @@ import com.badlogic.gdx.math.*;
 public class BattleMap {
   private TextureRegion grassTexture;
   
-  private Texture resource;
-  private boolean[][] resourceMap;
+  private Texture resourceTexture;
+  private boolean[][] resource;
   
   public BattleMap() {
     this.grassTexture = Assets.getInstance().getAtlas().findRegion("grass");
     
-    this.resource = new Texture("smile.png");
-    this.resourceMap = getResourceMap();
+    this.resourceTexture = new Texture("smile.png");
+    this.resource = setResource();
   }
   
   public void render(SpriteBatch batch) {
     for (int i = 0; i < 16; i++) {
       for (int j = 0; j < 9; j++) {
         batch.draw(grassTexture, i * 80, j * 80);
-      }
-    }
-    
-    for (int i = 0; i < 16; i++) {
-      for (int j = 0; j < 9; j++) {
-        if (resourceMap[i][j]) {
-          batch.draw(resource, i * 80, j * 80);
+        if (resource[i][j]) {
+          batch.draw(resourceTexture, i * 80, j * 80);
         }
       }
     }
   }
   
-  private boolean[][] getResourceMap() {
+  private boolean[][] setResource() {
     boolean[][] result = new boolean[16][9];
     for (int i = 0; i < 16; i++) {
       for (int j = 0; j < 9; j++) {
-        if (getRandom() == 10) result[i][j] = true;
+        if (getRandomNumber() == 10) result[i][j] = true;
       }
     }
     return result;
   }
   
-  private int getRandom() {
+  private int getRandomNumber() {
     return MathUtils.random(10);
   }
   
-  public void resourceFound(Vector2 gameObj) {
+  public void deleteResourceIfItFound(Vector2 gameObjPosition) {
     for (int i = 0; i < 16; i++) {
       for (int j = 0; j < 9; j++) {
-        if (resourceMap[i][j] && gameObj.dst(i * 80.0f + 40.0f, j * 80.0f + 40.0f) < 80.0f) {
-          resourceMap[i][j] = false;
+        if (resource[i][j] && gameObjPosition.dst(i * 80.0f + 40.0f, j * 80.0f + 40.0f) < 80.0f) {
+          resource[i][j] = false;
         } 
       }
     }
