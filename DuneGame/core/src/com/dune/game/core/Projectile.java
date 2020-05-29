@@ -5,9 +5,9 @@ import com.badlogic.gdx.math.*;
 
 public class Projectile extends GameObject implements Poolable {
   private TextureRegion texture;
+  private float angle;
   private Vector2 velocity;
   private float speed;
-  private float angle;
   private boolean active;
   
   
@@ -19,17 +19,12 @@ public class Projectile extends GameObject implements Poolable {
   
   public void setup(Vector2 startPosition, float angle, TextureRegion texture) {
     this.texture = texture;
-    this.position.set(startPosition);
     this.angle = angle;
     this.velocity.set(speed * MathUtils.cosDeg(angle), speed * MathUtils.sinDeg(angle));
+    this.position.set(startPosition);
     this.active = true;
   }
 
-  @Override
-  public boolean isActive() {
-    return active;
-  }
-  
   public void update(float dt) {
     position.mulAdd(velocity, dt);
     if (position.x < 0 || position.x > 1280 || position.y < 0  || position.y > 720) {
@@ -45,4 +40,8 @@ public class Projectile extends GameObject implements Poolable {
     batch.draw(texture, position.x - 8, position.y - 8);
   }
   
+  @Override
+  public boolean isActive() {
+    return active;
+  }
 }

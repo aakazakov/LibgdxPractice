@@ -35,8 +35,7 @@ public class Weapon {
     return type;
   }
   
-  public float getUsageTimePersentage() {
+  public float getUsageTimePercentage() {
     return time / period;
   }
-  
 }

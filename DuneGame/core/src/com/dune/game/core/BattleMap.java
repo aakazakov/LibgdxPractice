@@ -87,15 +87,6 @@ public class BattleMap {
     return value;
   }
   
-  public void render(SpriteBatch batch) {
-    for (int i = 0; i < 16; i++) {
-      for (int j = 0; j < 9; j++) {
-        batch.draw(grassTexture, i * 80, j * 80);
-        cells[i][j].render(batch);
-      }
-    }
-  }
-
   public void update(float dt) {
     for (int i = 0; i < COLUMNS_COUNT; i++) {
       for (int j = 0; j < ROWS_COUNT; j++) {
@@ -104,4 +95,12 @@ public class BattleMap {
     }
   }
   
+  public void render(SpriteBatch batch) {
+    for (int i = 0; i < 16; i++) {
+      for (int j = 0; j < 9; j++) {
+        batch.draw(grassTexture, i * 80, j * 80);
+        cells[i][j].render(batch);
+      }
+    }
+  }
 }

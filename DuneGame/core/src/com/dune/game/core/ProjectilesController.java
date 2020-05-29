@@ -35,5 +35,4 @@ public class ProjectilesController extends ObjectPool<Projectile> {
       activeList.get(i).render(batch);
     }
   }
-
 }

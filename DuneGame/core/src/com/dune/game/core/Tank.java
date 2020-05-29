@@ -9,19 +9,21 @@ public class Tank extends GameObject implements Poolable {
   public enum Owner { PLAYER, AI }
   
   private Owner ownerType;
+  private Weapon weapon;
   private TextureRegion[] textures;
+  private TextureRegion progressbarTexture;
   private Vector2 destination;
   private float angle;
   private float speed;
+  private float timePerFrame;
   private float rotationSpeed;
   private float moveTimer;
-  private float timePerFrame;
-  private Weapon weapon;
   private int container;
   private int hp;
   
   public Tank(GameController gc) {
     super(gc);
+    this.progressbarTexture = Assets.getInstance().getAtlas().findRegion("progressbar");
     this.timePerFrame = 0.08f;
     this.rotationSpeed = 90.0f;
   }
@@ -29,15 +31,15 @@ public class Tank extends GameObject implements Poolable {
   public void setup(float x, float y, Owner ownerType) {
     this.textures = Assets.getInstance().getAtlas().findRegion("tankanim").split(64, 64)[0];
     this.position.set(x, y);
-    this.ownerType = ownerType;
     this.speed = 120.0f;
+    this.ownerType = ownerType;
+    this.hp = 100;
     this.weapon = new Weapon(Type.HARVEST, 3.0f, 1);
     this.destination = new Vector2(position);
-    this.hp = 100;
   }
   
   public void update(float dt) {
-    if (Gdx.input.justTouched()) {
+    if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
       destination.set(Gdx.input.getX(), 720 - Gdx.input.getY());
     }
     if (position.dst(destination) > 3.0f) {
@@ -68,9 +70,6 @@ public class Tank extends GameObject implements Poolable {
         position.mulAdd(tmp, -dt);
       }
     }
-    if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-      fire();
-    }
     updateWeapon(dt);
     checkBounds();
   }
@@ -88,20 +87,22 @@ public class Tank extends GameObject implements Poolable {
     }
   }
   
-  public void fire() {
-    tmp.set(position).add(32 * MathUtils.cosDeg(angle), 32 * MathUtils.sinDeg(angle));
-    gc.getProjectilesController().setup(tmp, angle);
-  }
-  
   private void checkBounds() {
     if (position.x < 40.0f) position.x = 40.0f;
     if (position.x > 1240.0f) position.x = 1240.0f;
     if (position.y < 40.0f) position.y = 40.0f;
     if (position.y > 680.0f) position.y = 680.0f;
   }
-
+  
   public void render(SpriteBatch batch) {
     batch.draw(textures[getCurrentFrameIndex()], position.x - 40, position.y - 40, 40, 40, 80, 80, 1, 1, angle);
+    if (weapon.getType() == Weapon.Type.HARVEST && weapon.getUsageTimePercentage() > 0.0f) {
+      batch.setColor(0.2f, 0.2f, 0.0f, 1.0f);
+      batch.draw(progressbarTexture, position.x - 32, position.y + 30, 64, 12);
+      batch.setColor(1.0f, 1.0f, 0.0f, 1.0f);
+      batch.draw(progressbarTexture, position.x - 30, position.y + 32, 60 * weapon.getUsageTimePercentage(), 8);
+      batch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+  }
   }
   
   private int getCurrentFrameIndex() {
@@ -112,5 +113,4 @@ public class Tank extends GameObject implements Poolable {
   public boolean isActive() {
     return hp > 0;
   }
-  
 }

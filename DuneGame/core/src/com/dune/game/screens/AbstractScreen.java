@@ -3,7 +3,6 @@ package com.dune.game.screens;
 import com.badlogic.gdx.Screen;
 
 public abstract class AbstractScreen implements Screen {
-
   @Override
   public void resize(int width, int height) { }
 
@@ -15,5 +14,4 @@ public abstract class AbstractScreen implements Screen {
 
   @Override
   public void hide() { }
-
 }

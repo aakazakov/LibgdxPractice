@@ -31,5 +31,4 @@ public class TanksController extends ObjectPool<Tank> {
       activeList.get(i).render(batch);
     }
   }
-  
 }
