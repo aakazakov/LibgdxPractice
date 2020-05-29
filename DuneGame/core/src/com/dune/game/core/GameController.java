@@ -15,8 +15,8 @@ public class GameController {
   public void update(float dt) {
     projectilesController.update(dt);
     tank.update(dt);
+    map.update(dt);
     
-    map.deleteResourceIfItFound(tank.getPosition());
   }
   
   public BattleMap getMap() { return map; }

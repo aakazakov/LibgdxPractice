@@ -16,4 +16,12 @@ public abstract class GameObject {
   public Vector2 getPosition() {
     return position;
   }
+  
+  public int getCellX() {
+    return (int) (position.x / BattleMap.CELL_SIZE);
+  }
+  
+  public int getCellY() {
+    return (int) (position.y / BattleMap.CELL_SIZE);
+  }
 }

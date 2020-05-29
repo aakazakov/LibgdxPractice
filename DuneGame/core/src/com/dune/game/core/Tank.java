@@ -3,6 +3,7 @@ package com.dune.game.core;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.*;
+import com.dune.game.core.Weapon.Type;
 
 public class Tank extends GameObject {
   private TextureRegion[] textures;
@@ -12,6 +13,8 @@ public class Tank extends GameObject {
   private float rotationSpeed;
   private float moveTimer;
   private float timePerFrame;
+  private Weapon weapon;
+  private int container;
   
   public Tank(GameController gc, float x, float y) {
     super(gc);
@@ -21,6 +24,7 @@ public class Tank extends GameObject {
     this.speed = 120.0f;
     this.timePerFrame = 0.08f;
     this.rotationSpeed = 90.0f;
+    this.weapon = new Weapon(Type.HARVEST, 3.0f, 1);
   }
   
   public void update(float dt) {
@@ -58,7 +62,21 @@ public class Tank extends GameObject {
     if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
       fire();
     }
+    
     checkBounds();
+  }
+  
+  public void updateWeapon(float dt) {
+    if (weapon.getType() == Type.HARVEST) {
+      if (gc.getMap().getResourceCount(this) > 0) {
+        int result = weapon.use(dt);
+        if (result > -1) {
+          container += gc.getMap().harvestResource(this, result);
+        }
+      } else {
+        weapon.reset();
+      }
+    }
   }
   
   public void fire() {
