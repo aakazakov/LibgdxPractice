@@ -20,6 +20,7 @@ public class Tank extends GameObject implements Poolable {
   private float moveTimer;
   private int container;
   private int hp;
+  private boolean controlled;
   
   public Tank(GameController gc) {
     super(gc);
@@ -39,8 +40,13 @@ public class Tank extends GameObject implements Poolable {
   }
   
   public void update(float dt) {
-    if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
-      destination.set(Gdx.input.getX(), 720 - Gdx.input.getY());
+    if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)
+        && position.dst(Gdx.input.getX(), 720 - Gdx.input.getY()) < 40) {
+        controlled = !controlled;
+    }
+    if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)
+        && controlled) {
+        destination.set(Gdx.input.getX(), 720 - Gdx.input.getY());
     }
     if (position.dst(destination) > 3.0f) {
       float angleTo = tmp.set(destination).sub(position).angle();
