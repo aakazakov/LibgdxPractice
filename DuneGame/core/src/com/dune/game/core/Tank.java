@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.*;
 import com.dune.game.core.Weapon.Type;
 
-public class Tank extends GameObject implements Poolable {
+public class Tank extends GameObject implements Poolable, Updatable {
   public enum Owner { PLAYER, AI }
   
   private Owner ownerType;
@@ -41,6 +41,7 @@ public class Tank extends GameObject implements Poolable {
     this.destination = new Vector2(position);
   }
   
+  @Override
   public void update(float dt) {
     if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)
         && position.dst(Gdx.input.getX(), 720 - Gdx.input.getY()) < 40) {
@@ -103,6 +104,7 @@ public class Tank extends GameObject implements Poolable {
     if (position.y > 680.0f) position.y = 680.0f;
   }
   
+  @Override
   public void render(SpriteBatch batch) {
     batch.draw(textures[getCurrentFrameIndex()], position.x - 40, position.y - 40, 40, 40, 80, 80, 1, 1, angle);
     if (weapon.getType() == Weapon.Type.HARVEST && weapon.getUsageTimePercentage() > 0.0f) {
