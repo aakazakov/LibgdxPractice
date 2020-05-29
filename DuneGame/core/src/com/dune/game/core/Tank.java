@@ -5,7 +5,10 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.*;
 import com.dune.game.core.Weapon.Type;
 
-public class Tank extends GameObject {
+public class Tank extends GameObject implements Poolable {
+  public enum Owner { PLAYER, AI }
+  
+  private Owner ownerType;
   private TextureRegion[] textures;
   private Vector2 destination;
   private float angle;
@@ -15,16 +18,22 @@ public class Tank extends GameObject {
   private float timePerFrame;
   private Weapon weapon;
   private int container;
+  private int hp;
   
-  public Tank(GameController gc, float x, float y) {
+  public Tank(GameController gc) {
     super(gc);
-    this.position.set(x, y);
-    this.destination = new Vector2(position);
-    this.textures = Assets.getInstance().getAtlas().findRegion("tankanim").split(64, 64)[0];
-    this.speed = 120.0f;
     this.timePerFrame = 0.08f;
     this.rotationSpeed = 90.0f;
+  }
+  
+  public void setup(float x, float y, Owner ownerType) {
+    this.textures = Assets.getInstance().getAtlas().findRegion("tankanim").split(64, 64)[0];
+    this.position.set(x, y);
+    this.ownerType = ownerType;
+    this.speed = 120.0f;
     this.weapon = new Weapon(Type.HARVEST, 3.0f, 1);
+    this.destination = new Vector2(position);
+    this.hp = 100;
   }
   
   public void update(float dt) {
@@ -97,6 +106,11 @@ public class Tank extends GameObject {
   
   private int getCurrentFrameIndex() {
     return (int) (moveTimer / timePerFrame) % textures.length;
+  }
+
+  @Override
+  public boolean isActive() {
+    return hp > 0;
   }
   
 }

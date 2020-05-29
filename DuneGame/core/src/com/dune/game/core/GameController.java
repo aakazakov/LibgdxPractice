@@ -1,28 +1,35 @@
 package com.dune.game.core;
 
+import com.dune.game.core.Tank.Owner;
+
 public class GameController {
   private BattleMap map;
   private ProjectilesController projectilesController;
-  private Tank tank;
+  private TanksController tanksController;
 
   public GameController() {
     Assets.getInstance().loadAssets();
     this.map = new BattleMap();
     this.projectilesController = new ProjectilesController(this);
-    this.tank = new Tank(this, 200, 200);
+    this.tanksController = new TanksController(this);
+    tanksController.setup(200, 200, Owner.PLAYER);
+    tanksController.setup(200, 400, Owner.PLAYER);
   }
   
   public void update(float dt) {
     projectilesController.update(dt);
-    tank.update(dt);
     map.update(dt);
-    
+    tanksController.update(dt);
   }
   
-  public BattleMap getMap() { return map; }
+  public BattleMap getMap() {
+    return map; 
+  }
   
-  public Tank getTank() { return tank; }
-  
+  public TanksController getTanksController() {
+    return tanksController;
+  }
+
   public ProjectilesController getProjectilesController() {
     return projectilesController;
   }
