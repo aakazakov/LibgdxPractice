@@ -49,6 +49,7 @@ public class Tank extends GameObject implements Poolable {
     if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)
         && controlled) {
         destination.set(Gdx.input.getX(), 720 - Gdx.input.getY());
+        controlled = false;
     }
     if (position.dst(destination) > 3.0f) {
       float angleTo = tmp.set(destination).sub(position).angle();
