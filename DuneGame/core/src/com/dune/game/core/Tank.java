@@ -62,7 +62,7 @@ public class Tank extends GameObject {
     if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
       fire();
     }
-    
+    updateWeapon(dt);
     checkBounds();
   }
   
