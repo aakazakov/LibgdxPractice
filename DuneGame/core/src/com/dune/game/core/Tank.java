@@ -21,10 +21,12 @@ public class Tank extends GameObject implements Poolable {
   private int container;
   private int hp;
   private boolean controlled;
+  private BitmapFont font16;
   
   public Tank(GameController gc) {
     super(gc);
     this.progressbarTexture = Assets.getInstance().getAtlas().findRegion("progressbar");
+    this.font16 = Assets.getInstance().getAssetManager().get("fonts/font16.ttf");
     this.timePerFrame = 0.08f;
     this.rotationSpeed = 90.0f;
   }
@@ -82,7 +84,7 @@ public class Tank extends GameObject implements Poolable {
   
   public void updateWeapon(float dt) {
     if (weapon.getType() == Type.HARVEST) {
-      if (gc.getMap().getResourceCount(this) > 0) {
+      if (gc.getMap().getResourceCount(this) > 0 && container < 50) {
         int result = weapon.use(dt);
         if (result > -1) {
           container += gc.getMap().harvestResource(this, result);
@@ -108,7 +110,8 @@ public class Tank extends GameObject implements Poolable {
       batch.setColor(1.0f, 1.0f, 0.0f, 1.0f);
       batch.draw(progressbarTexture, position.x - 30, position.y + 32, 60 * weapon.getUsageTimePercentage(), 8);
       batch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-  }
+    }
+    font16.draw(batch, Integer.toString(container), position.x - 32, position.y + 30);
   }
   
   private int getCurrentFrameIndex() {

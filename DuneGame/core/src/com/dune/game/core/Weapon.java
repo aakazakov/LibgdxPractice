@@ -17,18 +17,18 @@ public class Weapon {
     this.period = period;
     this.power = power;
   }
-  
-  public void reset() {
-    time = 0.0f;
-  }
-  
+    
   public int use(float dt) {
     time += dt;
     if (time > period) {
-      time = 0.0f;
+      reset();
       return power;
     }
     return -1;
+  }
+  
+  public void reset() {
+    time = 0.0f;
   }
   
   public Type getType() {
