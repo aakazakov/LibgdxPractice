@@ -20,8 +20,8 @@ public class Tank extends GameObject implements Poolable {
   private float moveTimer;
   private int container;
   private int hp;
-  private boolean controlled;
   private BitmapFont font16;
+  private float lifeTime;
   
   public Tank(GameController gc) {
     super(gc);
@@ -42,14 +42,11 @@ public class Tank extends GameObject implements Poolable {
   }
 
   public void update(float dt) {
-    if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)
-        && position.dst(Gdx.input.getX(), 720 - Gdx.input.getY()) < 40) {
-        controlled = !controlled;
-    }
-    if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)
-        && controlled) {
+    lifeTime += dt;
+    if (Gdx.input.isButtonJustPressed(Input.Buttons.RIGHT)) {
+      if (gc.isTankSelected(this)) {
         destination.set(Gdx.input.getX(), 720 - Gdx.input.getY());
-        controlled = false;
+      }
     }
     if (position.dst(destination) > 3.0f) {
       float angleTo = tmp.set(destination).sub(position).angle();
@@ -104,7 +101,12 @@ public class Tank extends GameObject implements Poolable {
   }
 
   public void render(SpriteBatch batch) {
+    if (gc.isTankSelected(this)) {
+      float c = 0.8f + MathUtils.sin(lifeTime * 8.0f) * 0.2f;
+      batch.setColor(c, c, c, 1.0f);
+    }
     batch.draw(textures[getCurrentFrameIndex()], position.x - 40, position.y - 40, 40, 40, 80, 80, 1, 1, angle);
+    batch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
     if (weapon.getType() == Weapon.Type.HARVEST && weapon.getUsageTimePercentage() > 0.0f) {
       batch.setColor(0.2f, 0.2f, 0.0f, 1.0f);
       batch.draw(progressbarTexture, position.x - 32, position.y + 30, 64, 12);
