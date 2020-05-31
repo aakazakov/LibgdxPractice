@@ -22,4 +22,17 @@ public class ProjectilesController extends ObjectPool<Projectile> {
     Projectile p = getActiveElement();
     p.setup(startPosition, angle, projectileTexture);
   }
+  
+  public void update(float dt) {
+    for (int i = 0; i < activeList.size(); i++) {
+      activeList.get(i).update(dt);
+    }
+    checkPool();
+  }
+  
+  public void render(SpriteBatch batch) {
+    for (int i = 0; i < activeList.size(); i++) {
+      activeList.get(i).render(batch);
+    }
+  }
 }

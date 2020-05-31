@@ -3,7 +3,7 @@ package com.dune.game.core;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.*;
 
-public class Projectile extends GameObject implements Poolable, Updatable {
+public class Projectile extends GameObject implements Poolable {
   private TextureRegion texture;
   private float angle;
   private Vector2 velocity;
@@ -25,7 +25,6 @@ public class Projectile extends GameObject implements Poolable, Updatable {
     this.active = true;
   }
 
-  @Override
   public void update(float dt) {
     position.mulAdd(velocity, dt);
     if (position.x < 0 || position.x > 1280 || position.y < 0  || position.y > 720) {
@@ -36,8 +35,7 @@ public class Projectile extends GameObject implements Poolable, Updatable {
   public void deactivate() {
     active = false;
   }
-  
-  @Override
+
   public void render(SpriteBatch batch) {
     batch.draw(texture, position.x - 8, position.y - 8);
   }

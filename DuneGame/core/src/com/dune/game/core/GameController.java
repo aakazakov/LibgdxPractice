@@ -23,7 +23,7 @@ public class GameController {
   }
   
   public BattleMap getMap() {
-    return map; 
+    return map;
   }
   
   public TanksController getTanksController() {

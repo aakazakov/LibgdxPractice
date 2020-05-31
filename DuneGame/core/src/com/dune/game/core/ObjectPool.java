@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public abstract class ObjectPool<T extends Poolable & Updatable> {
+public abstract class ObjectPool<T extends Poolable> {
   protected List<T> activeList;
   protected List<T> freeList;
   
@@ -40,18 +40,5 @@ public abstract class ObjectPool<T extends Poolable & Updatable> {
   
   public List<T> getFreeList() {
     return freeList;
-  }
-  
-  public void update(float dt) {
-    for (int i = 0; i < activeList.size(); i++) {
-      activeList.get(i).update(dt);
-    }
-    checkPool();
-  }
-  
-  public void render(SpriteBatch batch) {
-    for (int i = 0; i < activeList.size(); i++) {
-      activeList.get(i).render(batch);
-    }
   }
 }
