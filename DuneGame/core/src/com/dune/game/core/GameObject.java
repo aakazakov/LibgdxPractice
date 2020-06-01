@@ -13,6 +13,10 @@ public abstract class GameObject {
     this.tmp = new Vector2();
   }
   
+  public void moveBy(Vector2 value) {
+    position.add(value);
+  }
+  
   public Vector2 getPosition() {
     return position;
   }
