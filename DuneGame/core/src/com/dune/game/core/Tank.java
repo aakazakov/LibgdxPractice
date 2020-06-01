@@ -32,7 +32,7 @@ public class Tank extends GameObject implements Poolable {
   }
   
   public void setup(float x, float y, Owner ownerType) {
-    this.textures = Assets.getInstance().getAtlas().findRegion("tankanim").split(64, 64)[0];
+    this.textures = Assets.getInstance().getAtlas().findRegion("tankcore").split(64, 64)[0];
     this.position.set(x, y);
     this.speed = 120.0f;
     this.ownerType = ownerType;
