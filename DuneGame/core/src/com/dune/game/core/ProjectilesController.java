@@ -19,7 +19,7 @@ public class ProjectilesController extends ObjectPool<Projectile> {
   }
   
   public void setup(Vector2 startPosition, float angle) {
-    Projectile p = getActiveElement();
+    Projectile p = activateObject();
     p.setup(startPosition, angle, projectileTexture);
   }
   

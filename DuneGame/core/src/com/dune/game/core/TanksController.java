@@ -15,7 +15,7 @@ public class TanksController extends ObjectPool<Tank> {
   }
   
   public void setup(float x, float y, Tank.Owner ownerType) {
-    Tank t = getActiveElement();
+    Tank t = activateObject();
     t.setup(x, y, ownerType);
   }
   

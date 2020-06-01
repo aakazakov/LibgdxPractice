@@ -30,6 +30,7 @@ public class GameController {
     map.update(dt);
     tanksController.update(dt);
     checkSelection();
+//    checkCollisions(dt);
   }
   
   private void checkSelection() {
@@ -37,7 +38,7 @@ public class GameController {
       selectedUnits.clear();
       tmp.set(Gdx.input.getX(), 720 - Gdx.input.getY());
       Tank t;
-      for (int i = 0; i < tanksController.getActiveList().size(); i++) {
+      for (int i = 0; i < tanksController.activeSize(); i++) {
         t = tanksController.getActiveList().get(i);
         if (t.getPosition().dst(tmp) < 30.0f) {
           selectedUnits.add(t);
@@ -49,6 +50,10 @@ public class GameController {
   public boolean isTankSelected(Tank t) {
     return selectedUnits.contains(t);
   }
+  
+//  private void checkCollisions(float dt) {
+//    
+//  }
   
   public BattleMap getMap() {
     return map;
