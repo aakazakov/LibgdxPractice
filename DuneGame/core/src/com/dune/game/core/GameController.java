@@ -2,9 +2,8 @@ package com.dune.game.core;
 
 import java.util.*;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.*;
+import com.badlogic.gdx.math.*;
 import com.dune.game.core.Tank.Owner;
 
 public class GameController {
@@ -21,8 +20,9 @@ public class GameController {
     this.tanksController = new TanksController(this);
     this.selectedUnits = new HashSet<>();
     this.tmp = new Vector2();
-    tanksController.setup(200, 200, Owner.PLAYER);
-    tanksController.setup(200, 400, Owner.PLAYER);
+    for (int i = 0; i < 5; i++) {
+      tanksController.setup(MathUtils.random(80, 1200), MathUtils.random(80, 640), Owner.PLAYER);
+    }
   }
   
   public void update(float dt) {

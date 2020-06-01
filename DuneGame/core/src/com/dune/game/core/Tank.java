@@ -120,6 +120,15 @@ public class Tank extends GameObject implements Poolable {
   private int getCurrentFrameIndex() {
     return (int) (moveTimer / timePerFrame) % textures.length;
   }
+  
+  @Override
+  public void moveBy(Vector2 value) {
+    boolean stayStill = position.dst(destination) < 3.0f;
+    position.add(value);
+    if (stayStill) {
+      destination.set(position);
+    }
+  }
 
   @Override
   public boolean isActive() {
