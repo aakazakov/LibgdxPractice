@@ -50,25 +50,7 @@ public class Tank extends GameObject implements Poolable {
     }
     if (position.dst(destination) > 3.0f) {
       float angleTo = tmp.set(destination).sub(position).angle();
-      if (angle > angleTo) {
-        if (Math.abs(angle - angleTo) <= 180.0f) {
-          angle -= rotationSpeed * dt;
-        } else {
-          angle += rotationSpeed * dt;
-        }
-      } else {
-        if (Math.abs(angle - angleTo) <= 180.0f) {
-          angle += rotationSpeed * dt;
-        } else {
-          angle -= rotationSpeed * dt;
-        }
-      }
-      if (angle < 0.0f) {
-        angle += 360.0f;
-      }
-      if (angle > 360.0f) {
-        angle -= 360.0f;
-      }
+      angle = rotateTo(angle, angleTo, rotationSpeed, dt);
       moveTimer += dt;
       tmp.set(speed, 0).rotate(angle);
       position.mulAdd(tmp, dt);
@@ -80,6 +62,24 @@ public class Tank extends GameObject implements Poolable {
     checkBounds();
   }
   
+  private float rotateTo(float srcAngle, float angleTo, float rSpeed, float dt) {
+    if (Math.abs(srcAngle - angleTo) > 3.0f) {
+      if ((srcAngle > angleTo && Math.abs(srcAngle - angleTo) <= 180.0f)
+          || (srcAngle < angleTo && Math.abs(srcAngle - angleTo) > 180.0f)) {
+        srcAngle -= rSpeed * dt;
+      } else {
+        srcAngle += rSpeed * dt;
+      }
+    }
+    if (srcAngle < 0.0f) {
+      srcAngle += 360.0f;
+    }
+    if (srcAngle > 360.0f) {
+      srcAngle -= 360.0f;
+    }
+    return srcAngle;
+  }
+
   public void updateWeapon(float dt) {
     if (weapon.getType() == Type.HARVEST) {
       if (gc.getMap().getResourceCount(this) > 0 && container < 50) {
