@@ -111,14 +111,15 @@ public class GameController {
   }
   
   private void checkProjectileHit() {
-    if (projectilesController.activeSize() == 0) return;
     for (int i = 0; i < tanksController.activeSize(); i++) {
       Tank tank = tanksController.getActiveList().get(i);
       Tank target = tank.getTarget();
       if (tank.getWeapon().getType() == Weapon.Type.GROUND && target != null) {
         for (int j = 0; j < projectilesController.activeSize(); j++) {
           Projectile p = projectilesController.getActiveList().get(j);
-          if (p.getPosition().dst(target.getPosition()) < 40) {
+          if (Math.abs(tank.getWeapon().getAngle() - p.getAngle()) < 0.1f ) {
+            if (p.getPosition().dst(target.getPosition()) > 40) continue;
+            tank.targetDamaged();
             p.deactivate();
           }
         }

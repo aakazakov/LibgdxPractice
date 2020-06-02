@@ -10,7 +10,6 @@ public class Projectile extends GameObject implements Poolable {
   private float speed;
   private boolean active;
   
-  
   public Projectile(GameController gc) {
     super(gc);
     this.velocity = new Vector2();
@@ -43,5 +42,9 @@ public class Projectile extends GameObject implements Poolable {
   @Override
   public boolean isActive() {
     return active;
+  }
+  
+  public float getAngle() {
+    return angle;
   }
 }

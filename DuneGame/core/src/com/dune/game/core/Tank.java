@@ -108,6 +108,15 @@ public class Tank extends GameObject implements Poolable {
     this.target = target;
   }
   
+  public void targetDamaged() {
+    target.reduceHp();
+    if (!target.isActive()) target = null;
+  }
+  
+  public void reduceHp() {
+    --hp;
+  }
+
   private float rotateTo(float srcAngle, float angleTo, float rSpeed, float dt) {
     if (Math.abs(srcAngle - angleTo) > 3.0f) {
       if ((srcAngle > angleTo && Math.abs(srcAngle - angleTo) <= 180.0f)
