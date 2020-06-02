@@ -157,6 +157,10 @@ public class Tank extends GameObject implements Poolable {
     return weapon;
   }
   
+  public Tank getTarget() {
+    return target;
+  }
+  
   @Override
   public void moveBy(Vector2 value) {
     boolean stayStill = position.dst(destination) < 3.0f;

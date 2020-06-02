@@ -88,6 +88,7 @@ public class GameController {
     map.update(dt);
     tanksController.update(dt);
     checkCollisions();
+    checkProjectileHit();
   }
    
   public boolean isTankSelected(Tank t) {
@@ -105,6 +106,22 @@ public class GameController {
         t2.moveBy(tmp);
         tmp.scl(-1);
         t1.moveBy(tmp);
+      }
+    }
+  }
+  
+  private void checkProjectileHit() {
+    if (projectilesController.activeSize() == 0) return;
+    for (int i = 0; i < tanksController.activeSize(); i++) {
+      Tank tank = tanksController.getActiveList().get(i);
+      Tank target = tank.getTarget();
+      if (tank.getWeapon().getType() == Weapon.Type.GROUND && target != null) {
+        for (int j = 0; j < projectilesController.activeSize(); j++) {
+          Projectile p = projectilesController.getActiveList().get(j);
+          if (p.getPosition().dst(target.getPosition()) < 40) {
+            p.deactivate();
+          }
+        }
       }
     }
   }
