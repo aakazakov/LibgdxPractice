@@ -3,8 +3,6 @@ package com.dune.game.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 public abstract class ObjectPool<T extends Poolable> {
   protected List<T> activeList;
   protected List<T> freeList;
