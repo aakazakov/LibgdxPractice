@@ -11,6 +11,7 @@ public class Tank extends GameObject implements Poolable {
   private Owner ownerType;
   private Weapon weapon;
   private TextureRegion[] textures;
+  private TextureRegion[] weaponsTextures;
   private TextureRegion progressbarTexture;
   private Vector2 destination;
   private float angle;
@@ -26,6 +27,10 @@ public class Tank extends GameObject implements Poolable {
   public Tank(GameController gc) {
     super(gc);
     this.progressbarTexture = Assets.getInstance().getAtlas().findRegion("progressbar");
+    this.weaponsTextures = new TextureRegion[] {
+        Assets.getInstance().getAtlas().findRegion("turret"),
+        Assets.getInstance().getAtlas().findRegion("harvester")
+    };
     this.font16 = Assets.getInstance().getAssetManager().get("fonts/font16.ttf");
     this.timePerFrame = 0.08f;
     this.rotationSpeed = 90.0f;
@@ -106,6 +111,7 @@ public class Tank extends GameObject implements Poolable {
       batch.setColor(c, c, c, 1.0f);
     }
     batch.draw(textures[getCurrentFrameIndex()], position.x - 40, position.y - 40, 40, 40, 80, 80, 1, 1, angle);
+    batch.draw(weaponsTextures[weapon.getType().getImageIndex()], position.x - 40, position.y - 40, 40, 40, 80, 80, 1, 1, angle);
     batch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
     if (weapon.getType() == Weapon.Type.HARVEST && weapon.getUsageTimePercentage() > 0.0f) {
       batch.setColor(0.2f, 0.2f, 0.0f, 1.0f);

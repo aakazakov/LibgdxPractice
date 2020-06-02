@@ -2,9 +2,17 @@ package com.dune.game.core;
 
 public class Weapon {
   public enum Type {
-    GROUND,
-    AIR,
-    HARVEST
+    GROUND(0), HARVEST(1), AIR(2);
+    
+    private int imageIndex;
+    
+    private Type(int imageIndex) {
+      this.imageIndex = imageIndex;
+    }
+    
+    public int getImageIndex() {
+      return imageIndex;
+    }
   }
   
   private Type type;
