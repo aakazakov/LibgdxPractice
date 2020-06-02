@@ -19,6 +19,7 @@ public class Weapon {
   private float period;
   private float time;
   private int power;
+  private float angle;
   
   public Weapon(Type type, float period, int power) {
     this.type = type;
@@ -45,5 +46,13 @@ public class Weapon {
   
   public float getUsageTimePercentage() {
     return time / period;
+  }
+  
+  public void setAngle(float angle) {
+    this.angle = angle;
+  }
+
+  public float getAngle() {
+    return angle;
   }
 }

@@ -11,7 +11,7 @@ public class GameController {
   private BattleMap map;
   private ProjectilesController projectilesController;
   private TanksController tanksController;
-  private Set<Tank> selectedUnits;
+  private List<Tank> selectedUnits;
   private Vector2 tmp;
   private Vector2 selectionStart;
 
@@ -20,11 +20,14 @@ public class GameController {
     this.map = new BattleMap();
     this.projectilesController = new ProjectilesController(this);
     this.tanksController = new TanksController(this);
-    this.selectedUnits = new HashSet<>();
+    this.selectedUnits = new ArrayList<>();
     this.tmp = new Vector2();
     this.selectionStart = new Vector2();
     for (int i = 0; i < 5; i++) {
       tanksController.setup(MathUtils.random(80, 1200), MathUtils.random(80, 640), Owner.PLAYER);
+    }
+    for (int i = 0; i < 2; i++) {
+      tanksController.setup(MathUtils.random(80, 1200), MathUtils.random(80, 640), Owner.AI);
     }
     prepareInput();
   }
@@ -57,7 +60,8 @@ public class GameController {
           if (Math.abs(tmp.x - selectionStart.x) > 20 && Math.abs(tmp.y - selectionStart.y) > 20) {
             for (int i = 0; i < tanksController.activeSize(); i++) {
               Tank t = tanksController.getActiveList().get(i);
-              if (t.getPosition().x > selectionStart.x
+              if (t.getOwnerType() == Owner.PLAYER
+                  && t.getPosition().x > selectionStart.x
                   && t.getPosition().x < tmp.x
                   && t.getPosition().y > tmp.y
                   && t.getPosition().y < selectionStart.y) {
@@ -83,24 +87,9 @@ public class GameController {
     projectilesController.update(dt);
     map.update(dt);
     tanksController.update(dt);
-//    checkSelection();
     checkCollisions();
   }
-  
-//  private void checkSelection() {
-//    if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)) {
-//      selectedUnits.clear();
-//      tmp.set(Gdx.input.getX(), 720 - Gdx.input.getY());
-//      Tank t;
-//      for (int i = 0; i < tanksController.activeSize(); i++) {
-//        t = tanksController.getActiveList().get(i);
-//        if (t.getPosition().dst(tmp) < 30.0f) {
-//          selectedUnits.add(t);
-//        }
-//      }
-//    }
-//  }
-  
+   
   public boolean isTankSelected(Tank t) {
     return selectedUnits.contains(t);
   }
@@ -122,6 +111,10 @@ public class GameController {
   
   public BattleMap getMap() {
     return map;
+  }
+  
+  public List<Tank> getSelectedUnits() {
+    return selectedUnits;
   }
   
   public TanksController getTanksController() {
