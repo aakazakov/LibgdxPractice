@@ -142,6 +142,7 @@ public class Tank extends GameObject implements Poolable {
       batch.setColor(1.0f, 1.0f, 1.0f, 1.0f);
     }
     font16.draw(batch, Integer.toString(container), position.x - 32, position.y + 30);
+    font16.draw(batch, Integer.toString(hp), position.x - 32, position.y - 16);
   }
   
   private int getCurrentFrameIndex() {
