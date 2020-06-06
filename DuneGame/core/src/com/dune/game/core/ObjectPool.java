@@ -19,7 +19,7 @@ public abstract class ObjectPool<T extends Poolable> {
     return tempObject;
   }
   
-  public abstract T newObject();
+  protected abstract T newObject();
   
   public void free(int index) {
     freeList.add(activeList.remove(index));

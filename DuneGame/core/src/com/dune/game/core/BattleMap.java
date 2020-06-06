@@ -10,7 +10,7 @@ public class BattleMap {
     private int resource;
     private float resourceRegenerationRate;
     private float resourceRegenerationTime;
-    
+
     public Cell(int cellX, int cellY) {
       this.cellX = cellX;
       this.cellY = cellY;
@@ -25,7 +25,7 @@ public class BattleMap {
         resourceRegenerationRate += 10.0f;
       }
     }
-    
+
     private void update(float dt) {
       if (resourceRegenerationRate > 0.01f) {
         resourceRegenerationTime += dt;
@@ -38,7 +38,7 @@ public class BattleMap {
         }
       }
     }
-    
+
     private void render(SpriteBatch batch) {
       if (resource > 0) {
         float scale = 0.5f + resource * 0.2f;
@@ -50,15 +50,15 @@ public class BattleMap {
       }
     }
   }
-  
+
   public static final int COLUMNS_COUNT = 16;
   public static final int ROWS_COUNT = 9;
   public static final int CELL_SIZE = 80;
-    
+
   private TextureRegion grassTexture;
   private TextureRegion resourceTexture;
   private Cell[][] cells;
-  
+
   public BattleMap() {
     this.grassTexture = Assets.getInstance().getAtlas().findRegion("grass");
     this.resourceTexture = Assets.getInstance().getAtlas().findRegion("resource");
@@ -69,24 +69,27 @@ public class BattleMap {
       }
     }
   }
-  
-  public int getResourceCount(GameObject harvester) {
-    return cells[harvester.getCellX()][harvester.getCellY()].resource;
+
+  public int getResourceCount(Vector2 point) {
+    int cx = (int) (point.x / CELL_SIZE);
+    int cy = (int) (point.y / CELL_SIZE);
+    return cells[cx][cy].resource;
   }
-  
-  public int harvestResource(GameObject harvester, int power) {
+
+  public int harvestResource(Vector2 point, int power) {
     int value = 0;
-    int resource = cells[harvester.getCellX()][harvester.getCellY()].resource;
-    if (resource >= power) {
+    int cx = (int) (point.x / CELL_SIZE);
+    int cy = (int) (point.y / CELL_SIZE);
+    if (cells[cx][cy].resource >= power) {
       value = power;
-      cells[harvester.getCellX()][harvester.getCellY()].resource -= power;
+      cells[cx][cy].resource -= power;
     } else {
-      value = resource;
-      cells[harvester.getCellX()][harvester.getCellY()].resource = 0;
+      value = cells[cx][cy].resource;
+      cells[cx][cy].resource = 0;
     }
     return value;
   }
-  
+
   public void update(float dt) {
     for (int i = 0; i < COLUMNS_COUNT; i++) {
       for (int j = 0; j < ROWS_COUNT; j++) {
@@ -94,7 +97,7 @@ public class BattleMap {
       }
     }
   }
-  
+
   public void render(SpriteBatch batch) {
     for (int i = 0; i < 16; i++) {
       for (int j = 0; j < 9; j++) {

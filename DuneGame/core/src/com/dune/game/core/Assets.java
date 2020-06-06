@@ -10,18 +10,18 @@ import com.dune.game.screens.ScreenManager;
 
 public class Assets {
   private static final Assets instance = new Assets();
-  
+
   private AssetManager assetManager;
   private TextureAtlas textureAtlas;
-  
+
   private Assets() {
     assetManager = new AssetManager();
   }
-  
+
   public static Assets getInstance() {
     return instance;
   }
-  
+
   public void loadAssets(ScreenManager.ScreenType type) {
     switch (type) {
     case MENU:
@@ -36,7 +36,7 @@ public class Assets {
       break;
     }
   }
-  
+
   public void createStandardFont(int size) {
     FileHandleResolver resolver = new InternalFileHandleResolver();
     assetManager.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
@@ -52,16 +52,15 @@ public class Assets {
     fontParameter.fontParameters.shadowColor = Color.BLACK;
     assetManager.load("fonts/font" + size + ".ttf", BitmapFont.class, fontParameter);
   }
-  
+
   public void makeLinks() {
     textureAtlas = assetManager.get("images/game.pack", TextureAtlas.class);
   }
-  
+
   public void clear() {
     assetManager.clear();
   }
-  
-  
+
   public AssetManager getAssetManager() {
     return assetManager;
   }

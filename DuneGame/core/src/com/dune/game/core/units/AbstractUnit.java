@@ -29,9 +29,11 @@ public abstract class AbstractUnit extends GameObject implements Poolable, Targe
   protected Targetable target;
   protected float minDstToActiveTarget;
 
-  @Override
-  public TargetType getType() {
-    return TargetType.UNIT;
+  public AbstractUnit(GameController gc) {
+    super(gc);
+    this.progressbarTexture = Assets.getInstance().getAtlas().findRegion("progressbar");
+    this.timePerFrame = 0.08f;
+    this.rotationSpeed = 90.0f;
   }
 
   public boolean takeDamage(int damage) {
@@ -45,6 +47,11 @@ public abstract class AbstractUnit extends GameObject implements Poolable, Targe
     return false;
   }
 
+  @Override
+  public TargetType getType() {
+    return TargetType.UNIT;
+  }
+
   public UnitType getUnitType() {
     return unitType;
   }
@@ -53,6 +60,11 @@ public abstract class AbstractUnit extends GameObject implements Poolable, Targe
     return weapon;
   }
 
+  public Owner getOwnerType() {
+    return ownerType;
+  }
+
+  @Override
   public void moveBy(Vector2 value) {
     boolean stayStill = false;
     if (position.dst(destination) < 3.0f) {
@@ -64,38 +76,21 @@ public abstract class AbstractUnit extends GameObject implements Poolable, Targe
     }
   }
 
-  public Owner getOwnerType() {
-    return ownerType;
-  }
-
   @Override
   public boolean isActive() {
     return hp > 0;
   }
 
-  public AbstractUnit(GameController gc) {
-    super(gc);
-    this.progressbarTexture = Assets.getInstance().getAtlas().findRegion("progressbar");
-    this.timePerFrame = 0.08f;
-    this.rotationSpeed = 90.0f;
-  }
-
   public abstract void setup(Owner ownerType, float x, float y);
-
-  private int getCurrentFrameIndex() {
-    return (int) (moveTimer / timePerFrame) % textures.length;
-  }
 
   public void update(float dt) {
     lifeTime += dt;
-    // ≈сли у танка есть цель, он пытаетс€ ее атаковать
     if (target != null) {
       destination.set(target.getPosition());
       if (position.dst(target.getPosition()) < minDstToActiveTarget) {
         destination.set(position);
       }
     }
-    // ≈сли танку необходимо доехать до какой-то точки, он работает в этом условии
     if (position.dst(destination) > 3.0f) {
       float angleTo = tmp.set(destination).sub(position).angle();
       angle = rotateTo(angle, angleTo, rotationSpeed, dt);
@@ -109,13 +104,6 @@ public abstract class AbstractUnit extends GameObject implements Poolable, Targe
     updateWeapon(dt);
     checkBounds();
   }
-
-  public void commandMoveTo(Vector2 point) {
-    destination.set(point);
-    target = null;
-  }
-
-  public abstract void commandAttack(Targetable target);
 
   public abstract void updateWeapon(float dt);
 
@@ -134,6 +122,13 @@ public abstract class AbstractUnit extends GameObject implements Poolable, Targe
     }
   }
 
+  public void commandMoveTo(Vector2 point) {
+    destination.set(point);
+    target = null;
+  }
+
+  public abstract void commandAttack(Targetable target);
+
   public void render(SpriteBatch batch) {
     float c = 1.0f;
     float r = 0.0f;
@@ -150,6 +145,10 @@ public abstract class AbstractUnit extends GameObject implements Poolable, Targe
 
     batch.setColor(1, 1, 1, 1);
     renderGui(batch);
+  }
+
+  private int getCurrentFrameIndex() {
+    return (int) (moveTimer / timePerFrame) % textures.length;
   }
 
   public void renderGui(SpriteBatch batch) {
