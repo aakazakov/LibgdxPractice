@@ -9,6 +9,7 @@ public class GameScreen extends AbstractScreen {
   private WorldRenderer worldRenderer;
   
   public GameScreen(SpriteBatch batch) {
+    super(batch);
     this.batch = batch;
   }
 
