@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.freetype.*;
+import com.dune.game.screens.ScreenManager;
 
 public class Assets {
   private static final Assets instance = new Assets();
@@ -21,12 +22,19 @@ public class Assets {
     return instance;
   }
   
-  public void loadAssets() {
-    assetManager.load("game.pack", TextureAtlas.class);
-    createStandardFont(32);
-    createStandardFont(16);
-    assetManager.finishLoading();
-    textureAtlas = assetManager.get("game.pack");
+  public void loadAssets(ScreenManager.ScreenType type) {
+    switch (type) {
+    case MENU:
+      assetManager.load("images/game.pack", TextureAtlas.class);
+      createStandardFont(14);
+      createStandardFont(24);
+      createStandardFont(72);
+      break;
+    case GAME:
+      assetManager.load("images/game.pack", TextureAtlas.class);
+      createStandardFont(32);
+      break;
+    }
   }
   
   public void createStandardFont(int size) {
@@ -43,7 +51,11 @@ public class Assets {
     fontParameter.fontParameters.shadowOffsetY = 1;
     fontParameter.fontParameters.shadowColor = Color.BLACK;
     assetManager.load("fonts/font" + size + ".ttf", BitmapFont.class, fontParameter);
-}
+  }
+  
+  public void makeLinks() {
+    textureAtlas = assetManager.get("images/game.pack", TextureAtlas.class);
+  }
   
   public void clear() {
     assetManager.clear();
