@@ -8,13 +8,11 @@ import com.dune.game.screens.ScreenManager;
 public class WorldRenderer {
   private SpriteBatch batch;
   private GameController gc;
-  private BitmapFont font32;
   private TextureRegion selectorTexture;
 
   public WorldRenderer(SpriteBatch batch, GameController gc) {
     this.batch = batch;
     this.gc = gc;
-    this.font32 = Assets.getInstance().getAssetManager().get("fonts/font32.ttf");
     this.selectorTexture = Assets.getInstance().getAtlas().findRegion("selector");
   }
 
