@@ -1,6 +1,7 @@
 package com.dune.game.core.units;
 
 import com.badlogic.gdx.graphics.g2d.*;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.dune.game.core.*;
 
@@ -95,6 +96,15 @@ public abstract class AbstractUnit extends GameObject implements Poolable, Targe
       float angleTo = tmp.set(destination).sub(position).angle();
       angle = rotateTo(angle, angleTo, rotationSpeed, dt);
       moveTimer += dt;
+
+      if (gc.getMap().getResourceCount(position) > 0) {
+        for (int i = 0; i < gc.getMap().getResourceCount(position); i++) {
+          gc.getParticleController().setup(MathUtils.random(getCellX() * 80, getCellX() * 80 + 80),
+              MathUtils.random(getCellY() * 80, getCellY() * 80 + 80), MathUtils.random(-20, 20),
+              MathUtils.random(-20, 20), 0.3f, 0.5f, 0.4f, 0, 0, 1, 0.1f, 1, 1, 1, 0.4f);
+        }
+      }
+
       tmp.set(speed, 0).rotate(angle);
       position.mulAdd(tmp, dt);
       if (position.dst(destination) < 120.0f && Math.abs(angleTo - angle) > 10) {
