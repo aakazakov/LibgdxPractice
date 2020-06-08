@@ -1,29 +1,27 @@
 package com.dune.game.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.dune.game.core.Assets;
 
 public class MenuScreen extends AbstractScreen {
-  
+
   Stage stage;
-  
+
   public MenuScreen(SpriteBatch batch) {
     super(batch);
   }
 
   @Override
-  public void show() { 
+  public void show() {
     stage = new Stage(ScreenManager.getInstance().getViewport(), ScreenManager.getInstance().getBatch());
     Gdx.input.setInputProcessor(stage);
     Skin skin = new Skin();
@@ -40,26 +38,22 @@ public class MenuScreen extends AbstractScreen {
       }
     });
     
-    final TextButton exitBtn= new TextButton("EXIT", textButtonStyle);
+    final TextButton exitBtn = new TextButton("EXIT", textButtonStyle);
     exitBtn.addListener(new ClickListener() {
       @Override
       public void clicked(InputEvent event, float x, float y) {
         Gdx.app.exit();
       }
     });
-    Group menuGroup = new Group();
     
+    Group menuGroup = new Group();
+
     playBtn.setPosition(0.0f, 100.0f);
     exitBtn.setPosition(0.0f, 0.0f);
     menuGroup.addActor(playBtn);
     menuGroup.addActor(exitBtn);
-    menuGroup.setPosition(ScreenManager.WORLD_WIDTH / 2 - 160,
-        ScreenManager.WORLD_HEIGHT / 2);
-
-    Label.LabelStyle labelStyle = new Label.LabelStyle(font14, Color.WHITE);
-    skin.add("simpleLabel", labelStyle);
+    menuGroup.setPosition(ScreenManager.WORLD_WIDTH / 2 - 160, ScreenManager.WORLD_HEIGHT / 2);
     stage.addActor(menuGroup);
-    skin.dispose();
   }
 
   @Override
