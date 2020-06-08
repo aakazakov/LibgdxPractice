@@ -25,6 +25,7 @@ public class GameController {
   private ParticleController particleController;
   private Vector2 tmp;
   private Vector2 selectionStart;
+  private Vector2 selectionEnd;
   private Vector2 mouse;
   private GuiPlayerInfo guiPlayerInfo;
   private Stage stage;
@@ -36,7 +37,8 @@ public class GameController {
     this.tmp = new Vector2();
     this.playerLogic = new PlayerLogic(this);
     this.collider = new Collider(this);
-    this.selectionStart = new Vector2();
+    this.selectionStart = new Vector2(-1, -1);
+    this.selectionEnd = new Vector2(-1, -1);
     this.selectedUnits = new ArrayList<>();
     this.map = new BattleMap();
     this.projectilesController = new ProjectilesController(this);
@@ -105,6 +107,7 @@ public class GameController {
               }
             }
           }
+          selectionStart.set(-1, -1);
         }
         return true;
       }
@@ -178,5 +181,13 @@ public class GameController {
 
   public Stage getStage() {
     return stage;
+  }
+
+  public Vector2 getSelectionStart() {
+    return selectionStart;
+  }
+
+  public Vector2 getSelectionEnd() {
+    return selectionEnd;
   }
 }
