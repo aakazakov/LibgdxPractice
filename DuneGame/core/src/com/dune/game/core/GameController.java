@@ -173,7 +173,6 @@ public class GameController {
       @Override
       public void clicked(InputEvent event, float x, float y) {
         System.out.println("Test");
-        ;
       }
     });
     Group menuGroup = new Group();
