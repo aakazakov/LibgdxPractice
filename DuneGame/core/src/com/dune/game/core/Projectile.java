@@ -27,10 +27,6 @@ public class Projectile extends GameObject implements Poolable {
     this.active = true;
   }
 
-  public AbstractUnit getOwner() {
-    return owner;
-  }
-
   @Override
   public boolean isActive() {
     return active;
@@ -38,7 +34,13 @@ public class Projectile extends GameObject implements Poolable {
 
   public void update(float dt) {
     position.mulAdd(velocity, dt);
-    if (position.x < 0 || position.x > 1280 || position.y < 0 || position.y > 720) {
+    for (int i = 0; i < 4; i++) {
+      gc.getParticleController().setup(position.x, position.y, MathUtils.random(-40, 40), MathUtils.random(-40, 40),
+          0.3f, 0.8f, 0.6f, 1, 1, 0, 1, 1f, 0f, 0, 0.8f);
+    }
+
+    if (position.x < 0 || position.x > BattleMap.MAP_WIDTH_PX || position.y < 0
+        || position.y > BattleMap.MAP_HEIGHT_PX) {
       deactivate();
     }
   }
@@ -48,6 +50,14 @@ public class Projectile extends GameObject implements Poolable {
   }
 
   public void render(SpriteBatch batch) {
-    batch.draw(texture, position.x - 8, position.y - 8);
+//    batch.draw(texture, position.x - 8, position.y - 8);
+  }
+
+  public AbstractUnit getOwner() {
+    return owner;
+  }
+
+  public Vector2 getVelocity() {
+    return velocity;
   }
 }

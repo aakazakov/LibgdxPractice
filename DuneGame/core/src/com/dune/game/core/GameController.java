@@ -12,32 +12,12 @@ public class GameController {
   private PlayerLogic playerLogic;
   private ProjectilesController projectilesController;
   private UnitsController unitsController;
+  private ParticleController particleController;
   private Vector2 tmp;
   private Vector2 selectionStart;
   private Vector2 mouse;
   private Collider collider;
-
   private List<AbstractUnit> selectedUnits;
-
-  public UnitsController getUnitsController() {
-    return unitsController;
-  }
-
-  public List<AbstractUnit> getSelectedUnits() {
-    return selectedUnits;
-  }
-
-  public Vector2 getMouse() {
-    return mouse;
-  }
-
-  public ProjectilesController getProjectilesController() {
-    return projectilesController;
-  }
-
-  public BattleMap getMap() {
-    return map;
-  }
 
   public GameController() {
     this.mouse = new Vector2();
@@ -49,6 +29,7 @@ public class GameController {
     this.map = new BattleMap();
     this.projectilesController = new ProjectilesController(this);
     this.unitsController = new UnitsController(this);
+    this.particleController = new ParticleController();
     prepareInput();
   }
 
@@ -58,6 +39,7 @@ public class GameController {
     unitsController.update(dt);
     playerLogic.update(dt);
     projectilesController.update(dt);
+    particleController.update(dt);
     map.update(dt);
     collider.checkCollisions();
   }
@@ -114,5 +96,29 @@ public class GameController {
       }
     };
     Gdx.input.setInputProcessor(ip);
+  }
+  
+  public UnitsController getUnitsController() {
+    return unitsController;
+  }
+
+  public List<AbstractUnit> getSelectedUnits() {
+    return selectedUnits;
+  }
+
+  public Vector2 getMouse() {
+    return mouse;
+  }
+
+  public ProjectilesController getProjectilesController() {
+    return projectilesController;
+  }
+
+  public BattleMap getMap() {
+    return map;
+  }
+  
+  public ParticleController getParticleController() {
+    return particleController;
   }
 }

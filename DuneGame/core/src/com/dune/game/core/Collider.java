@@ -2,6 +2,7 @@ package com.dune.game.core;
 
 import java.util.List;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.dune.game.core.units.AbstractUnit;
 
@@ -35,6 +36,11 @@ public class Collider {
       for (int j = 0; j < gc.getUnitsController().getUnits().size(); j++) {
         AbstractUnit u = gc.getUnitsController().getUnits().get(j);
         if (p.getOwner() != u && p.getPosition().dst(u.getPosition()) < 30) {
+          for (int k = 0; k < 25; k++) {
+            tmp.set(p.getVelocity()).nor().scl(120.0f).add(MathUtils.random(-40, 40), MathUtils.random(-40, 40));
+            gc.getParticleController().setup(p.getPosition().x, p.getPosition().y, tmp.x, tmp.y, 0.4f, 1.0f, 0.2f, 1, 0,
+                0, 1, 1, 1, 0, 0.6f);
+          }
           p.deactivate();
           u.takeDamage(5);
         }
