@@ -18,6 +18,8 @@ import com.dune.game.core.units.AbstractUnit;
 import com.dune.game.screens.ScreenManager;
 
 public class GameController {
+  private static final float CAMERA_SPEED = 240.0f;
+  
   private BattleMap map;
   private PlayerLogic playerLogic;
   private ProjectilesController projectilesController;
@@ -27,6 +29,7 @@ public class GameController {
   private Vector2 selectionStart;
   private Vector2 selectionEnd;
   private Vector2 mouse;
+  private Vector2 pointOfView;
   private GuiPlayerInfo guiPlayerInfo;
   private Stage stage;
   private Collider collider;
@@ -44,6 +47,7 @@ public class GameController {
     this.projectilesController = new ProjectilesController(this);
     this.unitsController = new UnitsController(this);
     this.particleController = new ParticleController();
+    this.pointOfView = new Vector2(ScreenManager.HALF_WORLD_WIDTH, ScreenManager.HALF_WORLD_HEIGHT);
     createGuiAndPrepareGameInput();
   }
 
@@ -58,6 +62,38 @@ public class GameController {
     collider.checkCollisions();
     guiPlayerInfo.update(dt);
     stage.act(dt);
+    changePOV(dt);
+  }
+
+  public void changePOV(float dt) {
+    if (Gdx.input.getY() < 20) {
+      pointOfView.y += CAMERA_SPEED * dt;
+      if (pointOfView.y + ScreenManager.HALF_WORLD_HEIGHT > BattleMap.MAP_HEIGHT_PX) {
+        pointOfView.y = BattleMap.MAP_HEIGHT_PX - ScreenManager.HALF_WORLD_HEIGHT;
+      }
+      ScreenManager.getInstance().pointCameraTo(pointOfView);
+    }
+    if (Gdx.input.getY() > 700) {
+      pointOfView.y -= CAMERA_SPEED * dt;
+      if (pointOfView.y < ScreenManager.HALF_WORLD_HEIGHT) {
+        pointOfView.y = ScreenManager.HALF_WORLD_HEIGHT;
+      }
+      ScreenManager.getInstance().pointCameraTo(pointOfView);
+    }
+    if (Gdx.input.getX() < 20) {
+      pointOfView.x -= CAMERA_SPEED * dt;
+      if (pointOfView.x < ScreenManager.HALF_WORLD_WIDTH) {
+        pointOfView.x = ScreenManager.HALF_WORLD_WIDTH;
+      }
+      ScreenManager.getInstance().pointCameraTo(pointOfView);
+    }
+    if (Gdx.input.getX() > 1260) {
+      pointOfView.x += CAMERA_SPEED * dt;
+      if (pointOfView.x + ScreenManager.HALF_WORLD_WIDTH > BattleMap.MAP_WIDTH_PX) {
+        pointOfView.x = BattleMap.MAP_WIDTH_PX - ScreenManager.HALF_WORLD_WIDTH;
+      }
+      ScreenManager.getInstance().pointCameraTo(pointOfView);
+    }
   }
 
   public boolean isUnitSelected(AbstractUnit abstractUnit) {
@@ -189,5 +225,9 @@ public class GameController {
 
   public Vector2 getSelectionEnd() {
     return selectionEnd;
+  }
+
+  public Vector2 getPointOfView() {
+    return pointOfView;
   }
 }

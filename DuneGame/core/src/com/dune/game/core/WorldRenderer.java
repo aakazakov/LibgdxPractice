@@ -3,6 +3,7 @@ package com.dune.game.core;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.dune.game.screens.ScreenManager;
 
 public class WorldRenderer {
   private SpriteBatch batch;
@@ -20,14 +21,15 @@ public class WorldRenderer {
   public void render() {
     Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1);
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    ScreenManager.getInstance().pointCameraTo(gc.getPointOfView());
     batch.begin();
     gc.getMap().render(batch);
     gc.getUnitsController().render(batch);
     gc.getProjectilesController().render(batch);
     gc.getParticleController().render(batch);
-    font32.draw(batch, "Dune Game 2020 )", 0, 680, 1280, 1, false);
     drawSelectionFrame();
     batch.end();
+    ScreenManager.getInstance().resetCamera();
     gc.getStage().draw();
   }
 
