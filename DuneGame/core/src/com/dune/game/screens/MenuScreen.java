@@ -36,7 +36,7 @@ public class MenuScreen extends AbstractScreen {
     playBtn.addListener(new ClickListener() {
       @Override
       public void clicked(InputEvent event, float x, float y) {
-        System.out.println("play");
+        ScreenManager.getInstance().changeScreen(ScreenManager.ScreenType.GAME);
       }
     });
     
@@ -44,7 +44,7 @@ public class MenuScreen extends AbstractScreen {
     exitBtn.addListener(new ClickListener() {
       @Override
       public void clicked(InputEvent event, float x, float y) {
-        System.out.println("exit");
+        Gdx.app.exit();
       }
     });
     Group menuGroup = new Group();
@@ -71,9 +71,6 @@ public class MenuScreen extends AbstractScreen {
   }
 
   public void update(float dt) {
-    if (Gdx.input.justTouched()) {
-      ScreenManager.getInstance().changeScreen(ScreenManager.ScreenType.GAME);
-    }
     stage.act(dt);
   }
 
