@@ -52,6 +52,7 @@ public class GameController {
   }
 
   public void update(float dt) {
+    ScreenManager.getInstance().pointCameraTo(getPointOfView());
     mouse.set(Gdx.input.getX(), Gdx.input.getY());
     ScreenManager.getInstance().getViewport().unproject(mouse);
     unitsController.update(dt);
@@ -61,6 +62,7 @@ public class GameController {
     map.update(dt);
     collider.checkCollisions();
     guiPlayerInfo.update(dt);
+    ScreenManager.getInstance().resetCamera();
     stage.act(dt);
     changePOV(dt);
   }
