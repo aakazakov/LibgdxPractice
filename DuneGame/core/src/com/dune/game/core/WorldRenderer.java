@@ -25,5 +25,6 @@ public class WorldRenderer {
     gc.getParticleController().render(batch);
     font32.draw(batch, "Dune Game 2020 )", 0, 680, 1280, 1, false);
     batch.end();
+    gc.getStage().draw();
   }
 }

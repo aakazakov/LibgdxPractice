@@ -3,7 +3,17 @@ package com.dune.game.core;
 import java.util.*;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.*;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.dune.game.core.gui.GuiPlayerInfo;
 import com.dune.game.core.units.AbstractUnit;
 import com.dune.game.screens.ScreenManager;
 
@@ -16,6 +26,8 @@ public class GameController {
   private Vector2 tmp;
   private Vector2 selectionStart;
   private Vector2 mouse;
+  private GuiPlayerInfo guiPlayerInfo;
+  private Stage stage;
   private Collider collider;
   private List<AbstractUnit> selectedUnits;
 
@@ -30,7 +42,7 @@ public class GameController {
     this.projectilesController = new ProjectilesController(this);
     this.unitsController = new UnitsController(this);
     this.particleController = new ParticleController();
-    prepareInput();
+    createGuiAndPrepareGameInput();
   }
 
   public void update(float dt) {
@@ -42,14 +54,16 @@ public class GameController {
     particleController.update(dt);
     map.update(dt);
     collider.checkCollisions();
+    guiPlayerInfo.update(dt);
+    stage.act(dt);
   }
 
   public boolean isUnitSelected(AbstractUnit abstractUnit) {
     return selectedUnits.contains(abstractUnit);
   }
 
-  public void prepareInput() {
-    InputProcessor ip = new InputAdapter() {
+  public InputProcessor prepareInput() {
+    return new InputAdapter() {
       @Override
       public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (button == Input.Buttons.LEFT) {
@@ -95,9 +109,49 @@ public class GameController {
         return true;
       }
     };
-    Gdx.input.setInputProcessor(ip);
   }
-  
+
+  public void createGuiAndPrepareGameInput() {
+    stage = new Stage(ScreenManager.getInstance().getViewport(), ScreenManager.getInstance().getBatch());
+    Gdx.input.setInputProcessor(new InputMultiplexer(stage, prepareInput()));
+    Skin skin = new Skin();
+    skin.addRegions(Assets.getInstance().getAtlas());
+    BitmapFont font14 = Assets.getInstance().getAssetManager().get("fonts/font14.ttf");
+    TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle(skin.getDrawable("smButton"), null,
+        null, font14);
+    final TextButton menuBtn = new TextButton("Menu", textButtonStyle);
+    menuBtn.addListener(new ClickListener() {
+      @Override
+      public void clicked(InputEvent event, float x, float y) {
+        ScreenManager.getInstance().changeScreen(ScreenManager.ScreenType.MENU);
+      }
+    });
+
+    final TextButton testBtn = new TextButton("Test", textButtonStyle);
+    testBtn.addListener(new ClickListener() {
+      @Override
+      public void clicked(InputEvent event, float x, float y) {
+        System.out.println("Test");
+        ;
+      }
+    });
+    Group menuGroup = new Group();
+    menuBtn.setPosition(0, 0);
+    testBtn.setPosition(130, 0);
+    menuGroup.addActor(menuBtn);
+    menuGroup.addActor(testBtn);
+    menuGroup.setPosition(900, 680);
+
+    Label.LabelStyle labelStyle = new Label.LabelStyle(font14, Color.WHITE);
+    skin.add("simpleLabel", labelStyle);
+
+    guiPlayerInfo = new GuiPlayerInfo(playerLogic, skin);
+    guiPlayerInfo.setPosition(0, 700);
+    stage.addActor(guiPlayerInfo);
+    stage.addActor(menuGroup);
+    skin.dispose();
+  }
+
   public UnitsController getUnitsController() {
     return unitsController;
   }
@@ -117,8 +171,12 @@ public class GameController {
   public BattleMap getMap() {
     return map;
   }
-  
+
   public ParticleController getParticleController() {
     return particleController;
+  }
+
+  public Stage getStage() {
+    return stage;
   }
 }

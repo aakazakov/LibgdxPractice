@@ -100,4 +100,8 @@ public class ScreenManager {
   public void goToTarget() {
     game.setScreen(targetScreen);
   }
+
+  public SpriteBatch getBatch() {
+    return batch;
+  }
 }
