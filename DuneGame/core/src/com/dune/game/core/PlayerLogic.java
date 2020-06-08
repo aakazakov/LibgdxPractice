@@ -12,7 +12,7 @@ public class PlayerLogic {
 
   public PlayerLogic(GameController gc) {
     this.gc = gc;
-    this.money = 1000;
+    this.money = 0;
     this.unitsCount = 10;
     this.unitsMaxCount = 100;
   }
@@ -43,6 +43,10 @@ public class PlayerLogic {
     }
   }
 
+  public void addMoney(int money) {
+    this.money += money;
+  }
+  
   public int getMoney() {
     return money;
   }

@@ -37,6 +37,13 @@ public class Harvester extends AbstractUnit {
     } else {
       weapon.reset();
     }
+    
+    if (gc.getMap().isResourseStorage(position, ownerType)) {
+      if (container > 0) {
+        gc.getPlayerLogic().addMoney(container);
+        container = 0;
+      }
+    }
   }
 
   @Override

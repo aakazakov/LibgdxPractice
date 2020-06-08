@@ -232,4 +232,8 @@ public class GameController {
   public Vector2 getPointOfView() {
     return pointOfView;
   }
+
+  public PlayerLogic getPlayerLogic() {
+    return playerLogic;
+  }
 }
