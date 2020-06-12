@@ -58,6 +58,7 @@ public class MenuScreen extends AbstractScreen {
     menuGroup.addActor(exitBtn);
     menuGroup.setPosition(ScreenManager.WORLD_WIDTH / 2 - 160, ScreenManager.WORLD_HEIGHT / 2);
     stage.addActor(menuGroup);
+    skin.dispose();
   }
 
   @Override
