@@ -4,18 +4,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.dune.game.core.GameController;
 import com.dune.game.core.units.*;
+import com.dune.game.core.units.types.Owner;
+import com.dune.game.core.units.types.UnitType;
 
-public class PlayerLogic {
-  private GameController gc;
-  private int money;
-  private int unitsCount;
-  private int unitsMaxCount;
-
+public class PlayerLogic extends BaseLogic {
   public PlayerLogic(GameController gc) {
     this.gc = gc;
     this.money = 0;
     this.unitsCount = 10;
     this.unitsMaxCount = 100;
+    this.ownerType = Owner.PLAYER;
   }
 
   public void update(float dt) {
@@ -42,18 +40,5 @@ public class PlayerLogic {
         unit.commandAttack(aiUnit);
       }
     }
-  }
-  
-  public int getMoney() {
-    return money;
-  }
-
-  public int getUnitsCount() {
-    return unitsCount;
-  }
-
-  public int getUnitsMaxCount() {
-    return unitsMaxCount;
-  }
-  
+  } 
 }

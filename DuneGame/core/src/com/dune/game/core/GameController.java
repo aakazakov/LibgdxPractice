@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.dune.game.core.controllers.BuildingsController;
 import com.dune.game.core.controllers.ParticleController;
 import com.dune.game.core.controllers.ProjectilesController;
 import com.dune.game.core.controllers.UnitsController;
@@ -31,6 +32,7 @@ public class GameController {
   private ProjectilesController projectilesController;
   private UnitsController unitsController;
   private ParticleController particleController;
+  private BuildingsController buildingsController;
   private Vector2 tmp;
   private Vector2 selectionStart;
   private Vector2 selectionEnd;
@@ -52,8 +54,11 @@ public class GameController {
     this.map = new BattleMap();
     this.projectilesController = new ProjectilesController(this);
     this.unitsController = new UnitsController(this);
+    this.buildingsController = new BuildingsController(this);
     this.particleController = new ParticleController();
     this.pointOfView = new Vector2(ScreenManager.HALF_WORLD_WIDTH, ScreenManager.HALF_WORLD_HEIGHT);
+    this.buildingsController.setup(3, 3, playerLogic);
+//    this.buildingsController.setup(14, 8, aiLogic);
     createGuiAndPrepareGameInput();
   }
 
@@ -65,6 +70,7 @@ public class GameController {
     playerLogic.update(dt);
     projectilesController.update(dt);
     particleController.update(dt);
+    buildingsController.update(dt);
     map.update(dt);
     collider.checkCollisions();
     guiPlayerInfo.update(dt);
@@ -221,6 +227,10 @@ public class GameController {
   public ParticleController getParticleController() {
     return particleController;
   }
+  
+  public BuildingsController getBuildingsController() {
+    return buildingsController;
+}
 
   public Stage getStage() {
     return stage;

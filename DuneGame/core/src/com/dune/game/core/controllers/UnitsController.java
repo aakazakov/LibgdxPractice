@@ -6,9 +6,10 @@ import java.util.List;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.dune.game.core.BattleMap;
 import com.dune.game.core.GameController;
 import com.dune.game.core.units.AbstractUnit;
-import com.dune.game.core.units.Owner;
+import com.dune.game.core.units.types.Owner;
 
 public class UnitsController {
   private GameController gc;

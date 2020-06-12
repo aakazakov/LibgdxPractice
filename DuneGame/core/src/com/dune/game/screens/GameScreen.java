@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dune.game.core.*;
 
 public class GameScreen extends AbstractScreen {
-  private SpriteBatch batch;
   private GameController gameController;
   private WorldRenderer worldRenderer;
   

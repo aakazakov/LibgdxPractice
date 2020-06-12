@@ -26,6 +26,7 @@ public class WorldRenderer {
     gc.getUnitsController().render(batch);
     gc.getProjectilesController().render(batch);
     gc.getParticleController().render(batch);
+    gc.getBuildingsController().render(batch);
     drawSelectionFrame();
     batch.end();
     ScreenManager.getInstance().resetCamera();

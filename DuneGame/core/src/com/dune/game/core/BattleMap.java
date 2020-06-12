@@ -2,7 +2,7 @@ package com.dune.game.core;
 
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.*;
-import com.dune.game.core.units.Owner;
+import com.dune.game.core.units.types.Owner;
 import com.dune.game.screens.utils.Assets;
 
 public class BattleMap {
@@ -12,6 +12,8 @@ public class BattleMap {
     private int resource;
     private float resourceRegenerationRate;
     private float resourceRegenerationTime;
+    private Building buildingEntrance;
+    private boolean groundPassable;
 
     public Cell(int cellX, int cellY) {
       this.cellX = cellX;
@@ -44,17 +46,27 @@ public class BattleMap {
     private void render(SpriteBatch batch) {
       if (resource > 0) {
         float scale = 0.5f + resource * 0.2f;
-        batch.draw(resourceTexture, cellX * CELL_SIZE, cellY * CELL_SIZE, CELL_SIZE / 2,
-            CELL_SIZE / 2, CELL_SIZE, CELL_SIZE, scale, scale, 0.0f);
+        batch.draw(resourceTexture, cellX * CELL_SIZE, cellY * CELL_SIZE, CELL_SIZE / 2, CELL_SIZE / 2, CELL_SIZE,
+            CELL_SIZE, scale, scale, 0.0f);
       } else {
         if (resourceRegenerationRate > 0.01f) {
-          batch.draw(resourceTexture, cellX * CELL_SIZE, cellY * CELL_SIZE, CELL_SIZE / 2,
-              CELL_SIZE / 2, CELL_SIZE, CELL_SIZE, 0.1f, 0.1f, 0.0f);
+          batch.draw(resourceTexture, cellX * CELL_SIZE, cellY * CELL_SIZE, CELL_SIZE / 2, CELL_SIZE / 2, CELL_SIZE,
+              CELL_SIZE, 0.1f, 0.1f, 0.0f);
         }
       }
     }
+
+    public void blockGroundPass() {
+      groundPassable = false;
+      resourceRegenerationRate = 0.0f;
+      resource = 0;
+    }
+
+    public void unblockGroundPass() {
+      groundPassable = true;
+    }
   }
-  
+
   public static final int COLUMNS_COUNT = 24;
   public static final int ROWS_COUNT = 16;
   public static final int CELL_SIZE = 60;
@@ -95,6 +107,31 @@ public class BattleMap {
     }
     return value;
   }
+
+  public void blockGroundCell(int cellX, int cellY) {
+    cells[cellX][cellY].blockGroundPass();
+  }
+
+  public void unblockGroundCell(int cellX, int cellY) {
+    cells[cellX][cellY].unblockGroundPass();
+  }
+
+  public void setupBuildingEntrance(int cellX, int cellY, Building building) {
+    cells[cellX][cellY].buildingEntrance = building;
+  }
+
+  public boolean isCellGroundPassable(Vector2 position) {
+    int cellX = (int) (position.x / BattleMap.CELL_SIZE);
+    int cellY = (int) (position.y / BattleMap.CELL_SIZE);
+    if (cellX < 0 || cellY < 0 || cellX >= COLUMNS_COUNT || cellY >= ROWS_COUNT) {
+      return false;
+    }
+    return cells[cellX][cellY].groundPassable;
+  }
+  
+  public Building getBuildingEntrance(int cellX, int cellY) {
+    return cells[cellX][cellY].buildingEntrance;
+}
 
   public void update(float dt) {
     for (int i = 0; i < COLUMNS_COUNT; i++) {
