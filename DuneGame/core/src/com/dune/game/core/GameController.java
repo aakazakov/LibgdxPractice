@@ -81,21 +81,21 @@ public class GameController {
       }
       ScreenManager.getInstance().pointCameraTo(pointOfView);
     }
-    if (Gdx.input.getY() > 700) {
+    if (Gdx.input.getY() > 710) {
       pointOfView.y -= CAMERA_SPEED * dt;
       if (pointOfView.y < ScreenManager.HALF_WORLD_HEIGHT) {
         pointOfView.y = ScreenManager.HALF_WORLD_HEIGHT;
       }
       ScreenManager.getInstance().pointCameraTo(pointOfView);
     }
-    if (Gdx.input.getX() < 20) {
+    if (Gdx.input.getX() < 10) {
       pointOfView.x -= CAMERA_SPEED * dt;
       if (pointOfView.x < ScreenManager.HALF_WORLD_WIDTH) {
         pointOfView.x = ScreenManager.HALF_WORLD_WIDTH;
       }
       ScreenManager.getInstance().pointCameraTo(pointOfView);
     }
-    if (Gdx.input.getX() > 1260) {
+    if (Gdx.input.getX() > 1270) {
       pointOfView.x += CAMERA_SPEED * dt;
       if (pointOfView.x + ScreenManager.HALF_WORLD_WIDTH > BattleMap.MAP_WIDTH_PX) {
         pointOfView.x = BattleMap.MAP_WIDTH_PX - ScreenManager.HALF_WORLD_WIDTH;

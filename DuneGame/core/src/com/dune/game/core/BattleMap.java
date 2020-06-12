@@ -44,10 +44,12 @@ public class BattleMap {
     private void render(SpriteBatch batch) {
       if (resource > 0) {
         float scale = 0.5f + resource * 0.2f;
-        batch.draw(resourceTexture, cellX * 80, cellY * 80, 40, 40, 80, 80, scale, scale, 0.0f);
+        batch.draw(resourceTexture, cellX * CELL_SIZE, cellY * CELL_SIZE, CELL_SIZE / 2,
+            CELL_SIZE / 2, CELL_SIZE, CELL_SIZE, scale, scale, 0.0f);
       } else {
         if (resourceRegenerationRate > 0.01f) {
-          batch.draw(resourceTexture, cellX * 80, cellY * 80, 40, 40, 80, 80, 0.1f, 0.1f, 0.0f);
+          batch.draw(resourceTexture, cellX * CELL_SIZE, cellY * CELL_SIZE, CELL_SIZE / 2,
+              CELL_SIZE / 2, CELL_SIZE, CELL_SIZE, 0.1f, 0.1f, 0.0f);
         }
       }
     }
@@ -82,9 +84,9 @@ public class BattleMap {
     }
   }
   
-  public static final int COLUMNS_COUNT = 20;
-  public static final int ROWS_COUNT = 12;
-  public static final int CELL_SIZE = 80;
+  public static final int COLUMNS_COUNT = 24;
+  public static final int ROWS_COUNT = 16;
+  public static final int CELL_SIZE = 60;
   public static final int MAP_WIDTH_PX = COLUMNS_COUNT * CELL_SIZE;
   public static final int MAP_HEIGHT_PX = ROWS_COUNT * CELL_SIZE;
 
@@ -144,7 +146,7 @@ public class BattleMap {
   public void render(SpriteBatch batch) {
     for (int i = 0; i < COLUMNS_COUNT; i++) {
       for (int j = 0; j < ROWS_COUNT; j++) {
-        batch.draw(grassTexture, i * 80, j * 80);
+        batch.draw(grassTexture, i * CELL_SIZE, j * CELL_SIZE);
         cells[i][j].render(batch);
       }
     }
