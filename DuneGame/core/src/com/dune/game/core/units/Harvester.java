@@ -3,6 +3,8 @@ package com.dune.game.core.units;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.dune.game.core.*;
+import com.dune.game.core.interfaces.Targetable;
+import com.dune.game.screens.utils.Assets;
 
 public class Harvester extends AbstractUnit {
   public Harvester(GameController gc) {

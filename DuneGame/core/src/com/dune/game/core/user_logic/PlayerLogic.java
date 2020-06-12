@@ -1,7 +1,8 @@
-package com.dune.game.core;
+package com.dune.game.core.user_logic;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.dune.game.core.GameController;
 import com.dune.game.core.units.*;
 
 public class PlayerLogic {

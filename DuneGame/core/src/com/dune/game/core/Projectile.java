@@ -2,6 +2,7 @@ package com.dune.game.core;
 
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.*;
+import com.dune.game.core.interfaces.Poolable;
 import com.dune.game.core.units.AbstractUnit;
 
 public class Projectile extends GameObject implements Poolable {

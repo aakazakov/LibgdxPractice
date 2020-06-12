@@ -1,9 +1,11 @@
-package com.dune.game.core;
+package com.dune.game.core.utils;
 
 import java.util.List;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.dune.game.core.GameController;
+import com.dune.game.core.Projectile;
 import com.dune.game.core.units.AbstractUnit;
 
 public class Collider {

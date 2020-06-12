@@ -4,6 +4,9 @@ import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.dune.game.core.*;
+import com.dune.game.core.interfaces.Poolable;
+import com.dune.game.core.interfaces.Targetable;
+import com.dune.game.screens.utils.Assets;
 
 public abstract class AbstractUnit extends GameObject implements Poolable, Targetable {
   protected UnitType unitType;

@@ -1,8 +1,12 @@
-package com.dune.game.core;
+package com.dune.game.core.controllers;
 
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Vector2;
+import com.dune.game.core.GameController;
+import com.dune.game.core.Projectile;
 import com.dune.game.core.units.AbstractUnit;
+import com.dune.game.core.utils.ObjectPool;
+import com.dune.game.screens.utils.Assets;
 
 public class ProjectilesController extends ObjectPool<Projectile> {
   private GameController gc;

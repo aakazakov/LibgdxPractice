@@ -1,7 +1,9 @@
-package com.dune.game.core;
+package com.dune.game.core.utils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.dune.game.core.interfaces.Poolable;
 
 public abstract class ObjectPool<T extends Poolable> {
   protected List<T> activeList;

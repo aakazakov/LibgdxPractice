@@ -1,8 +1,10 @@
-package com.dune.game.core;
+package com.dune.game.core.controllers;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.dune.game.core.GameController;
 import com.dune.game.core.units.Harvester;
 import com.dune.game.core.units.Owner;
+import com.dune.game.core.utils.ObjectPool;
 
 public class HarvestersController extends ObjectPool<Harvester> {
   private GameController gc;

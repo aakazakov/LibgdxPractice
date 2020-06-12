@@ -1,4 +1,4 @@
-package com.dune.game.core;
+package com.dune.game.core.interfaces;
 
 import com.badlogic.gdx.math.Vector2;
 import com.dune.game.core.units.TargetType;
