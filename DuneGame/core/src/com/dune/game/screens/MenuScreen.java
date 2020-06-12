@@ -22,6 +22,10 @@ public class MenuScreen extends AbstractScreen {
 
   @Override
   public void show() {
+    createGui();
+  }
+
+  private void createGui() {
     stage = new Stage(ScreenManager.getInstance().getViewport(), batch);
     Gdx.input.setInputProcessor(stage);
     Skin skin = new Skin();
