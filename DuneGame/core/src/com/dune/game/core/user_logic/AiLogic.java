@@ -42,6 +42,7 @@ public class AiLogic extends BaseLogic {
       for (int i = 0; i < tmpAiBattleTanks.size(); i++) {
         BattleTank aiBattleTank = tmpAiBattleTanks.get(i);
         aiBattleTank.commandAttack(findNearestTarget(aiBattleTank, tmpPlayerBattleTanks));
+        System.out.println(tmpPlayerBattleTanks.size());
       }
     }
   }

@@ -78,6 +78,7 @@ public class GameController {
       ScreenManager.getInstance().getViewport().unproject(mouse);
       unitsController.update(dt);
       playerLogic.update(dt);
+      aiLogic.update(dt);
       projectilesController.update(dt);
       particleController.update(dt);
       buildingsController.update(dt);
