@@ -55,35 +55,6 @@ public class BattleMap {
     }
   }
   
-  private class ResourceStorage {
-    private int cellX;
-    private int cellY;
-    private Owner ownerType;
-    
-    public ResourceStorage(int cellX, int cellY, Owner ownerType) {
-      this.cellX = cellX;
-      this.cellY = cellY;
-      this.ownerType = ownerType;
-    }
-    
-    public int getX() {
-      return cellX;
-    }
-    
-    public int getY() {
-      return cellY;
-    }
-    
-    public Owner getOwnerType() {
-      return ownerType;
-    }
-
-    private void render(SpriteBatch batch) {
-      batch.setColor(0.0f, 0.0f, 0.0f, 0.7f);
-      batch.draw(grassTexture, cellX * CELL_SIZE, cellY * CELL_SIZE);
-    }
-  }
-  
   public static final int COLUMNS_COUNT = 24;
   public static final int ROWS_COUNT = 16;
   public static final int CELL_SIZE = 60;
@@ -93,14 +64,6 @@ public class BattleMap {
   private TextureRegion grassTexture;
   private TextureRegion resourceTexture;
   private Cell[][] cells;
-  
-  private ResourceStorage resourceStorage;
-  
-  public boolean isResourseStorage(Vector2 point, Owner ownerType) {
-    return (int) (point.x / CELL_SIZE)  == resourceStorage.getX()
-        && (int) (point.y / CELL_SIZE) == resourceStorage.getY()
-        && ownerType == resourceStorage.getOwnerType();
-  }
 
   public BattleMap() {
     this.grassTexture = Assets.getInstance().getAtlas().findRegion("grass");
@@ -111,8 +74,6 @@ public class BattleMap {
         cells[i][j] = new Cell(i, j);
       }
     }
-    
-    resourceStorage = new ResourceStorage(1, ROWS_COUNT / 2, Owner.PLAYER);
   }
 
   public int getResourceCount(Vector2 point) {
@@ -150,7 +111,5 @@ public class BattleMap {
         cells[i][j].render(batch);
       }
     }
-    
-    resourceStorage.render(batch);
   }
 }

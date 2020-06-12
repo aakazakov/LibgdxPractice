@@ -43,10 +43,6 @@ public class PlayerLogic {
       }
     }
   }
-
-  public void addMoney(int money) {
-    this.money += money;
-  }
   
   public int getMoney() {
     return money;
