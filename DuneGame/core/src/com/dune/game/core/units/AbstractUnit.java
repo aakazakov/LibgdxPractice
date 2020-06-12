@@ -9,11 +9,13 @@ import com.dune.game.core.interfaces.Targetable;
 import com.dune.game.core.units.types.Owner;
 import com.dune.game.core.units.types.TargetType;
 import com.dune.game.core.units.types.UnitType;
+import com.dune.game.core.user_logic.BaseLogic;
 import com.dune.game.screens.utils.Assets;
 
 public abstract class AbstractUnit extends GameObject implements Poolable, Targetable {
   protected UnitType unitType;
   protected Owner ownerType;
+  protected BaseLogic baseLogic;
   protected Weapon weapon;
 
   protected Vector2 destination;
@@ -42,6 +44,8 @@ public abstract class AbstractUnit extends GameObject implements Poolable, Targe
     this.timePerFrame = 0.08f;
     this.rotationSpeed = 90.0f;
   }
+
+  public abstract void setup(BaseLogic baseLogic, float x, float y);
 
   public boolean takeDamage(int damage) {
     if (!isActive()) {
@@ -77,6 +81,10 @@ public abstract class AbstractUnit extends GameObject implements Poolable, Targe
     if (position.dst(destination) < 3.0f) {
       stayStill = true;
     }
+    tmp.set(position).add(value);
+    if (!gc.getMap().isCellGroundPassable(tmp)) {
+      return;
+    }
     position.add(value);
     if (stayStill) {
       destination.set(position);
@@ -87,8 +95,6 @@ public abstract class AbstractUnit extends GameObject implements Poolable, Targe
   public boolean isActive() {
     return hp > 0;
   }
-
-  public abstract void setup(Owner ownerType, float x, float y);
 
   public void update(float dt) {
     lifeTime += dt;
@@ -105,15 +111,19 @@ public abstract class AbstractUnit extends GameObject implements Poolable, Targe
 
       if (gc.getMap().getResourceCount(position) > 0) {
         for (int i = 0; i < gc.getMap().getResourceCount(position); i++) {
-          gc.getParticleController().setup(MathUtils.random(getCellX() * BattleMap.CELL_SIZE, getCellX() * BattleMap.CELL_SIZE + BattleMap.CELL_SIZE),
-              MathUtils.random(getCellY() * BattleMap.CELL_SIZE, getCellY() * BattleMap.CELL_SIZE + BattleMap.CELL_SIZE), MathUtils.random(-20, 20),
-              MathUtils.random(-20, 20), 0.3f, 0.5f, 0.4f, 0, 0, 1, 0.1f, 1, 1, 1, 0.4f);
+          gc.getParticleController().setup(
+              MathUtils.random(getCellX() * BattleMap.CELL_SIZE,
+                  getCellX() * BattleMap.CELL_SIZE + BattleMap.CELL_SIZE),
+              MathUtils.random(getCellY() * BattleMap.CELL_SIZE,
+                  getCellY() * BattleMap.CELL_SIZE + BattleMap.CELL_SIZE),
+              MathUtils.random(-20, 20), MathUtils.random(-20, 20), 0.3f, 0.5f, 0.4f, 0, 0, 1, 0.1f, 1, 1, 1, 0.4f);
         }
       }
 
       tmp.set(speed, 0).rotate(angle);
       position.mulAdd(tmp, dt);
-      if (position.dst(destination) < 120.0f && Math.abs(angleTo - angle) > 10) {
+      if ((position.dst(destination) < 120.0f && Math.abs(angleTo - angle) > 10)
+          || !gc.getMap().isCellGroundPassable(position)) {
         position.mulAdd(tmp, -dt);
       }
     }

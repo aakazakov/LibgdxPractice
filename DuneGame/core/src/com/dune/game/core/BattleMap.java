@@ -28,6 +28,7 @@ public class BattleMap {
         resourceRegenerationRate *= 20.0f;
         resourceRegenerationRate += 10.0f;
       }
+      this.groundPassable = true;
     }
 
     private void update(float dt) {

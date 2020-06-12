@@ -10,6 +10,8 @@ import com.dune.game.core.BattleMap;
 import com.dune.game.core.GameController;
 import com.dune.game.core.units.AbstractUnit;
 import com.dune.game.core.units.types.Owner;
+import com.dune.game.core.units.types.UnitType;
+import com.dune.game.core.user_logic.BaseLogic;
 
 public class UnitsController {
   private GameController gc;
@@ -27,16 +29,16 @@ public class UnitsController {
     this.playerUnits = new ArrayList<>();
     this.aiUnits = new ArrayList<>();
     for (int i = 0; i < 5; i++) {
-      createBattleTank(Owner.PLAYER, MathUtils.random(80, 1200), MathUtils.random(80, 640));
+      createBattleTank(gc.getPlayerLogic(), MathUtils.random(80, 1200), MathUtils.random(80, 640));
     }
     for (int i = 0; i < 2; i++) {
-      createHarvester(Owner.PLAYER, MathUtils.random(80, 1200), MathUtils.random(80, 640));
+      createHarvester(gc.getPlayerLogic(), MathUtils.random(80, 1200), MathUtils.random(80, 640));
     }
     for (int i = 0; i < 2; i++) {
-      createBattleTank(Owner.AI, MathUtils.random(80, 1200), MathUtils.random(80, 640));
+      createBattleTank(gc.getPlayerLogic(), MathUtils.random(80, 1200), MathUtils.random(80, 640));
     }
     for (int i = 0; i < 2; i++) {
-      createHarvester(Owner.AI, MathUtils.random(80, 1200), MathUtils.random(80, 640));
+      createHarvester(gc.getPlayerLogic(), MathUtils.random(80, 1200), MathUtils.random(80, 640));
     }
   }
 
@@ -52,12 +54,12 @@ public class UnitsController {
     return aiUnits;
   }
 
-  public void createBattleTank(Owner owner, float x, float y) {
-    battleTanksController.setup(x, y, owner);
+  public void createBattleTank(BaseLogic baseLogic, float x, float y) {
+    battleTanksController.setup(x, y, baseLogic);
   }
 
-  public void createHarvester(Owner owner, float x, float y) {
-    harvestersController.setup(x, y, owner);
+  public void createHarvester(BaseLogic baseLogic, float x, float y) {
+    harvestersController.setup(x, y, baseLogic);
   }
 
   public AbstractUnit getNearestAiUnit(Vector2 point) {
@@ -68,6 +70,16 @@ public class UnitsController {
       }
     }
     return null;
+  }
+
+  public <T> void collectTanks(List<T> out, List<AbstractUnit> srcList, UnitType unitType) {
+    out.clear();
+    for (int i = 0; i < srcList.size(); i++) {
+      AbstractUnit au = srcList.get(i);
+      if (au.getUnitType() == unitType) {
+        out.add((T) au);
+      }
+    }
   }
 
   public void update(float dt) {

@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dune.game.core.GameController;
 import com.dune.game.core.units.BattleTank;
 import com.dune.game.core.units.types.Owner;
+import com.dune.game.core.user_logic.BaseLogic;
 import com.dune.game.core.utils.ObjectPool;
 
 public class BattleTanksController extends ObjectPool<BattleTank> {
@@ -14,9 +15,9 @@ public class BattleTanksController extends ObjectPool<BattleTank> {
     this.gc = gc;
   }
 
-  public void setup(float x, float y, Owner ownerType) {
+  public void setup(float x, float y, BaseLogic baseLogic) {
     BattleTank t = activateObject();
-    t.setup(ownerType, x, y);
+    t.setup(baseLogic, x, y);
   }
 
   @Override

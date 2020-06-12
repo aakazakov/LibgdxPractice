@@ -19,6 +19,7 @@ import com.dune.game.core.controllers.ProjectilesController;
 import com.dune.game.core.controllers.UnitsController;
 import com.dune.game.core.gui.GuiPlayerInfo;
 import com.dune.game.core.units.AbstractUnit;
+import com.dune.game.core.user_logic.AiLogic;
 import com.dune.game.core.user_logic.PlayerLogic;
 import com.dune.game.core.utils.Collider;
 import com.dune.game.screens.ScreenManager;
@@ -29,6 +30,7 @@ public class GameController {
   
   private BattleMap map;
   private PlayerLogic playerLogic;
+  private AiLogic aiLogic;
   private ProjectilesController projectilesController;
   private UnitsController unitsController;
   private ParticleController particleController;
@@ -41,12 +43,14 @@ public class GameController {
   private GuiPlayerInfo guiPlayerInfo;
   private Stage stage;
   private Collider collider;
+  private float worldTimer;
   private List<AbstractUnit> selectedUnits;
 
   public GameController() {
     this.mouse = new Vector2();
     this.tmp = new Vector2();
     this.playerLogic = new PlayerLogic(this);
+    this.aiLogic = new AiLogic(this);
     this.collider = new Collider(this);
     this.selectionStart = new Vector2(-1, -1);
     this.selectionEnd = new Vector2(-1, -1);
@@ -58,11 +62,12 @@ public class GameController {
     this.particleController = new ParticleController();
     this.pointOfView = new Vector2(ScreenManager.HALF_WORLD_WIDTH, ScreenManager.HALF_WORLD_HEIGHT);
     this.buildingsController.setup(3, 3, playerLogic);
-//    this.buildingsController.setup(14, 8, aiLogic);
+    this.buildingsController.setup(14, 8, aiLogic);
     createGuiAndPrepareGameInput();
   }
 
   public void update(float dt) {
+    worldTimer += dt;
     ScreenManager.getInstance().pointCameraTo(getPointOfView());
     mouse.set(Gdx.input.getX(), Gdx.input.getY());
     ScreenManager.getInstance().getViewport().unproject(mouse);
@@ -250,5 +255,9 @@ public class GameController {
 
   public PlayerLogic getPlayerLogic() {
     return playerLogic;
+  }
+
+  public float getWorldTimer() {
+    return worldTimer;
   }
 }

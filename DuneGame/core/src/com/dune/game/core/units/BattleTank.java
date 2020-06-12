@@ -7,6 +7,7 @@ import com.dune.game.core.interfaces.Targetable;
 import com.dune.game.core.units.types.Owner;
 import com.dune.game.core.units.types.TargetType;
 import com.dune.game.core.units.types.UnitType;
+import com.dune.game.core.user_logic.BaseLogic;
 import com.dune.game.screens.utils.Assets;
 
 public class BattleTank extends AbstractUnit {
@@ -23,9 +24,9 @@ public class BattleTank extends AbstractUnit {
   }
 
   @Override
-  public void setup(Owner ownerType, float x, float y) {
+  public void setup(BaseLogic baseLogic, float x, float y) {
     this.position.set(x, y);
-    this.ownerType = ownerType;
+    this.ownerType = baseLogic.getOwnerType();
     this.hp = this.hpMax;
     this.destination = new Vector2(position);
   }

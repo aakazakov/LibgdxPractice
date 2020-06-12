@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dune.game.core.GameController;
 import com.dune.game.core.units.Harvester;
 import com.dune.game.core.units.types.Owner;
+import com.dune.game.core.user_logic.BaseLogic;
 import com.dune.game.core.utils.ObjectPool;
 
 public class HarvestersController extends ObjectPool<Harvester> {
@@ -18,9 +19,9 @@ public class HarvestersController extends ObjectPool<Harvester> {
     this.gc = gc;
   }
 
-  public void setup(float x, float y, Owner ownerType) {
+  public void setup(float x, float y, BaseLogic baseLogic) {
     Harvester t = activateObject();
-    t.setup(ownerType, x, y);
+    t.setup(baseLogic, x, y);
   }
 
   public void update(float dt) {
