@@ -260,4 +260,8 @@ public class GameController {
   public float getWorldTimer() {
     return worldTimer;
   }
+
+  public AiLogic getAiLogic() {
+    return aiLogic;
+  }
 }

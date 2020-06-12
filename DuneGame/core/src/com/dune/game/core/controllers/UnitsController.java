@@ -35,10 +35,10 @@ public class UnitsController {
       createHarvester(gc.getPlayerLogic(), MathUtils.random(80, 1200), MathUtils.random(80, 640));
     }
     for (int i = 0; i < 2; i++) {
-      createBattleTank(gc.getPlayerLogic(), MathUtils.random(80, 1200), MathUtils.random(80, 640));
+      createBattleTank(gc.getAiLogic(), MathUtils.random(80, 1200), MathUtils.random(80, 640));
     }
     for (int i = 0; i < 2; i++) {
-      createHarvester(gc.getPlayerLogic(), MathUtils.random(80, 1200), MathUtils.random(80, 640));
+      createHarvester(gc.getAiLogic(), MathUtils.random(80, 1200), MathUtils.random(80, 640));
     }
   }
 
