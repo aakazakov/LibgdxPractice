@@ -27,7 +27,7 @@ import com.dune.game.screens.utils.Assets;
 
 public class GameController {
   private static final float CAMERA_SPEED = 240.0f;
-  
+
   private BattleMap map;
   private PlayerLogic playerLogic;
   private AiLogic aiLogic;
@@ -45,6 +45,7 @@ public class GameController {
   private Collider collider;
   private float worldTimer;
   private List<AbstractUnit> selectedUnits;
+  private boolean paused;
 
   public GameController() {
     this.mouse = new Vector2();
@@ -67,18 +68,23 @@ public class GameController {
   }
 
   public void update(float dt) {
-    worldTimer += dt;
-    ScreenManager.getInstance().pointCameraTo(getPointOfView());
-    mouse.set(Gdx.input.getX(), Gdx.input.getY());
-    ScreenManager.getInstance().getViewport().unproject(mouse);
-    unitsController.update(dt);
-    playerLogic.update(dt);
-    projectilesController.update(dt);
-    particleController.update(dt);
-    buildingsController.update(dt);
-    map.update(dt);
-    collider.checkCollisions();
-    guiPlayerInfo.update(dt);
+    if (Gdx.input.isKeyJustPressed(Input.Keys.P)) {
+      paused = !paused;
+    }
+    if (!paused) {
+      worldTimer += dt;
+      ScreenManager.getInstance().pointCameraTo(getPointOfView());
+      mouse.set(Gdx.input.getX(), Gdx.input.getY());
+      ScreenManager.getInstance().getViewport().unproject(mouse);
+      unitsController.update(dt);
+      playerLogic.update(dt);
+      projectilesController.update(dt);
+      particleController.update(dt);
+      buildingsController.update(dt);
+      map.update(dt);
+      collider.checkCollisions();
+      guiPlayerInfo.update(dt);
+    }
     ScreenManager.getInstance().resetCamera();
     stage.act(dt);
     changePOV(dt);
@@ -209,6 +215,10 @@ public class GameController {
     skin.dispose();
   }
 
+  public boolean isPaused() {
+    return paused;
+  }
+
   public UnitsController getUnitsController() {
     return unitsController;
   }
@@ -232,10 +242,10 @@ public class GameController {
   public ParticleController getParticleController() {
     return particleController;
   }
-  
+
   public BuildingsController getBuildingsController() {
     return buildingsController;
-}
+  }
 
   public Stage getStage() {
     return stage;
