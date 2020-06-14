@@ -128,10 +128,10 @@ public class BattleMap {
     }
     return cells[cellX][cellY].groundPassable;
   }
-  
+
   public Building getBuildingEntrance(int cellX, int cellY) {
     return cells[cellX][cellY].buildingEntrance;
-}
+  }
 
   public void update(float dt) {
     for (int i = 0; i < COLUMNS_COUNT; i++) {
