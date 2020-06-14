@@ -72,6 +72,7 @@ public class UnitsController {
     return null;
   }
 
+  @SuppressWarnings("unchecked")
   public <T> void collectTanks(List<T> out, List<AbstractUnit> srcList, UnitType unitType) {
     out.clear();
     for (int i = 0; i < srcList.size(); i++) {

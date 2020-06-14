@@ -2,7 +2,6 @@ package com.dune.game.core;
 
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.*;
-import com.dune.game.core.units.types.Owner;
 import com.dune.game.screens.utils.Assets;
 
 public class BattleMap {

@@ -16,6 +16,7 @@ public class AiLogic extends BaseLogic {
   private List<BattleTank> tmpAiBattleTanks;
   private List<Harvester> tmpPlayerHarvesters;
   private List<Harvester> tmpPlayerBattleTanks;
+  private List<Harvester> tmpAllPlayerUnits;
 
   public AiLogic(GameController gc) {
     this.gc = gc;
@@ -26,6 +27,7 @@ public class AiLogic extends BaseLogic {
     this.tmpAiBattleTanks = new ArrayList<>();
     this.tmpPlayerHarvesters = new ArrayList<>();
     this.tmpPlayerBattleTanks = new ArrayList<>();
+    this.tmpAllPlayerUnits = new ArrayList<>();
     this.timer = 10000.0f;
   }
 
@@ -39,10 +41,13 @@ public class AiLogic extends BaseLogic {
           UnitType.HARVESTER);
       gc.getUnitsController().collectTanks(tmpPlayerBattleTanks, gc.getUnitsController().getPlayerUnits(),
           UnitType.BATTLE_TANK);
+      
+      tmpAllPlayerUnits.addAll(tmpPlayerBattleTanks);
+      tmpAllPlayerUnits.addAll(tmpPlayerHarvesters);
+      
       for (int i = 0; i < tmpAiBattleTanks.size(); i++) {
         BattleTank aiBattleTank = tmpAiBattleTanks.get(i);
-        aiBattleTank.commandAttack(findNearestTarget(aiBattleTank, tmpPlayerBattleTanks));
-        System.out.println(tmpPlayerBattleTanks.size());
+        aiBattleTank.commandAttack(findNearestTarget(aiBattleTank, tmpAllPlayerUnits));
       }
     }
   }
