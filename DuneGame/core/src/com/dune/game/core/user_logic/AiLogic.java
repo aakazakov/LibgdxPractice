@@ -45,14 +45,18 @@ public class AiLogic extends BaseLogic {
       tmpAllPlayerUnits.addAll(tmpPlayerBattleTanks);
       tmpAllPlayerUnits.addAll(tmpPlayerHarvesters);
       
-      for (int i = 0; i < tmpAiBattleTanks.size(); i++) {
-        BattleTank aiBattleTank = tmpAiBattleTanks.get(i);
-        aiBattleTank.commandAttack(findNearestTarget(aiBattleTank, tmpAllPlayerUnits));
-      }
+      attackThePlayer();
+    }
+  }
+  
+  private void attackThePlayer() {
+    for (int i = 0; i < tmpAiBattleTanks.size(); i++) {
+      BattleTank aiBattleTank = tmpAiBattleTanks.get(i);
+      aiBattleTank.commandAttack(findNearestTarget(aiBattleTank, tmpAllPlayerUnits));
     }
   }
 
-  public <T extends AbstractUnit> T findNearestTarget(AbstractUnit currentTank, List<T> possibleTargetList) {
+  private <T extends AbstractUnit> T findNearestTarget(AbstractUnit currentTank, List<T> possibleTargetList) {
     T target = null;
     float minDist = 1000000.0f;
     for (int i = 0; i < possibleTargetList.size(); i++) {
