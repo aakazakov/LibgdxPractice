@@ -152,6 +152,11 @@ public abstract class AbstractUnit extends GameObject implements Poolable, Targe
     destination.set(point);
     target = null;
   }
+  
+  public void commandMoveTo(float x, float y) {
+    destination.set(x, y);
+    target = null;
+  }
 
   public abstract void commandAttack(Targetable target);
 

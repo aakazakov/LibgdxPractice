@@ -2,7 +2,6 @@ package com.dune.game.core;
 
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.*;
-import com.dune.game.core.units.types.Owner;
 import com.dune.game.screens.utils.Assets;
 
 public class BattleMap {
@@ -94,6 +93,10 @@ public class BattleMap {
     int cy = (int) (point.y / CELL_SIZE);
     return cells[cx][cy].resource;
   }
+  
+  public int getResourceCount(int x, int y) {
+    return cells[x][y].resource;
+  }
 
   public int harvestResource(Vector2 point, int power) {
     int value = 0;
@@ -129,10 +132,10 @@ public class BattleMap {
     }
     return cells[cellX][cellY].groundPassable;
   }
-  
+
   public Building getBuildingEntrance(int cellX, int cellY) {
     return cells[cellX][cellY].buildingEntrance;
-}
+  }
 
   public void update(float dt) {
     for (int i = 0; i < COLUMNS_COUNT; i++) {
