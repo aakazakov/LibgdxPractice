@@ -93,6 +93,10 @@ public class BattleMap {
     int cy = (int) (point.y / CELL_SIZE);
     return cells[cx][cy].resource;
   }
+  
+  public int getResourceCount(int x, int y) {
+    return cells[x][y].resource;
+  }
 
   public int harvestResource(Vector2 point, int power) {
     int value = 0;

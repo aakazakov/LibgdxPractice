@@ -9,11 +9,13 @@ import com.dune.game.core.user_logic.BaseLogic;
 import com.dune.game.screens.utils.Assets;
 
 public class Harvester extends AbstractUnit {
+  private boolean working;
+  
   public Harvester(GameController gc) {
     super(gc);
     this.textures = Assets.getInstance().getAtlas().findRegion("tankcore").split(64, 64)[0];
     this.weaponTexture = Assets.getInstance().getAtlas().findRegion("harvester");
-    this.containerCapacity = 10;
+    this.containerCapacity = 5;
     this.minDstToActiveTarget = 5.0f;
     this.speed = 120.0f;
     this.weapon = new Weapon(4.0f, 1);
@@ -28,6 +30,14 @@ public class Harvester extends AbstractUnit {
     this.ownerType = baseLogic.getOwnerType();
     this.hp = this.hpMax;
     this.destination = new Vector2(position);
+  }
+  
+  public boolean isWorking() {
+    return working;
+  }
+  
+  public void setWorking(boolean working) {
+    this.working = working;
   }
 
   public void updateWeapon(float dt) {
@@ -52,6 +62,10 @@ public class Harvester extends AbstractUnit {
       baseLogic.addMoney(container * 100);
       container = 0;
     }
+  }
+  
+  public boolean isContainerLoaded() {
+    return container == containerCapacity;
   }
 
   @Override
