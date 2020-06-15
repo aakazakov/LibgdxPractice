@@ -9,7 +9,6 @@ import com.dune.game.core.GameController;
 import com.dune.game.core.units.*;
 import com.dune.game.core.units.types.Owner;
 import com.dune.game.core.units.types.UnitType;
-import com.sun.tools.classfile.StackMap_attribute.stack_map_frame;
 
 public class AiLogic extends BaseLogic {
   private Building stock;
@@ -56,14 +55,14 @@ public class AiLogic extends BaseLogic {
         }
       }
 
-//      attackThePlayer();
-
-      findResource();
+      attackThePlayer();
+      
+      collectResources();
 
     }
   }
 
-  private void findResource() {
+  private void collectResources() {
     for (int i = 0; i < BattleMap.COLUMNS_COUNT; i++) {
       int leftX = 0;
       int rightX = 0;
@@ -71,7 +70,7 @@ public class AiLogic extends BaseLogic {
       int rightY = 0;
       for (int j = 0; j < tmpAiHarvesters.size(); j++) {
         Harvester h = tmpAiHarvesters.get(j);
-        if (!h.isWorking()) {
+        if (!h.isUsed()) {
           int posX = h.getCellX();
           int posY = h.getCellY();
           if (posX - i >= 0) {
@@ -89,23 +88,24 @@ public class AiLogic extends BaseLogic {
           for (int x = leftX; x <= rightX; x++) {
             for (int y = leftY; y <= rightY; y++) {
               if (gc.getMap().getResourceCount(x, y) > 0) {
-                h.setWorking(true);
+                h.setUsed(true);
                 h.commandMoveTo(x * BattleMap.CELL_SIZE + BattleMap.CELL_SIZE / 2,
                     y * BattleMap.CELL_SIZE + BattleMap.CELL_SIZE / 2);
                 break;
               }
             }
-            if (h.isWorking())
+            if (h.isUsed()) {
               break;
+            }
           }
         }
       }
     }
     for (int i = 0; i < tmpAiHarvesters.size(); i++) {
       Harvester h = tmpAiHarvesters.get(i);
-      if (h.isWorking()) {
+      if (h.isUsed()) {
         if (gc.getMap().getResourceCount(h.getCellX(), h.getCellY()) <= 0) {
-          h.setWorking(false);
+          h.setUsed(false);
         }
       }
       if (h.isContainerLoaded()) {

@@ -32,11 +32,11 @@ public class Harvester extends AbstractUnit {
     this.destination = new Vector2(position);
   }
   
-  public boolean isWorking() {
+  public boolean isUsed() {
     return working;
   }
   
-  public void setWorking(boolean working) {
+  public void setUsed(boolean working) {
     this.working = working;
   }
 
