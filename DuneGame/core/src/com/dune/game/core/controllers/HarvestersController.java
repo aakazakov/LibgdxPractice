@@ -3,7 +3,6 @@ package com.dune.game.core.controllers;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.dune.game.core.GameController;
 import com.dune.game.core.units.Harvester;
-import com.dune.game.core.units.types.Owner;
 import com.dune.game.core.user_logic.BaseLogic;
 import com.dune.game.core.utils.ObjectPool;
 
