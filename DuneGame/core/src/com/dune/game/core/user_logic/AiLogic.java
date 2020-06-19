@@ -1,9 +1,11 @@
 package com.dune.game.core.user_logic;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.dune.game.core.BattleMap;
 import com.dune.game.core.GameController;
@@ -15,24 +17,39 @@ import com.dune.game.core.units.types.UnitType;
 
 public class AiLogic extends BaseLogic {
   private class ResourceFinder {
-    Map<Harvester, int[]> harvesting;
+    Map<Harvester, int[]> harvestTable;
     
     public ResourceFinder() {
-      harvesting = new HashMap<>();
-      for (int i = 0; i < tmpAiHarvesters.size(); i++) {
-        harvesting.put(tmpAiHarvesters.get(i), null);
-      }
+      harvestTable = new HashMap<>();
     }
     
     public void go() {
-      int[] resource = getFirstAvailableResource();
-      if (resource != null) {
-        Harvester nearestHarvester = findNearestHarvester(resource);
-        
-        if (nearestHarvester != null) {
-          int[] nearestResource = getNearestResource(nearestHarvester); // stopped here
+      harvestTable.clear();
+      
+      if (!tmpAiHarvesters.isEmpty()) {
+        for (int i = 0; i < tmpAiHarvesters.size(); i++) {
+          int[] resource = getFirstAvailableResource();     
+          finedPair(resource);
         }
-        
+      }
+      
+      // FIXME hash map ??????
+      
+    }
+    
+    private void finedPair(int[] reasourceCell) {
+      if (reasourceCell == null) return;
+      
+      Harvester nearestHarvester = findNearestHarvester(reasourceCell);
+      
+      if (nearestHarvester == null) return;
+      
+      int[] nearestResource = findNearestResource(nearestHarvester);
+      
+      if (Arrays.equals(reasourceCell, nearestResource)) {
+        harvestTable.put(nearestHarvester, nearestResource);
+      } else {
+        finedPair(nearestResource);
       }
     }
     
@@ -42,8 +59,7 @@ public class AiLogic extends BaseLogic {
         for (int j = 0; j < BattleMap.ROWS_COUNT; j++) {
           resource[0] = i;
           resource[1] = j;
-          if (!isResourceOccupied(resource)) return resource;
-          // TODO check resource in harvesting ???;
+          if (!isResourceOccupied(resource) && !harvestTable.containsValue(resource)) return resource;
         }
       }
       return null;
@@ -52,8 +68,10 @@ public class AiLogic extends BaseLogic {
     private Harvester findNearestHarvester(int[] resource) {
       Harvester nearestHarvester = null;
       float minDst = 10000000.0f;
+      if (tmpAiHarvesters.isEmpty()) return nearestHarvester;
       for (int i = 0; i < tmpAiHarvesters.size(); i++) {
         Harvester harvester = tmpAiHarvesters.get(i);
+        if (harvestTable.containsKey(harvester)) continue;
         float x = resource[0] * BattleMap.CELL_SIZE + BattleMap.CELL_SIZE / 2;
         float y = resource[1] * BattleMap.CELL_SIZE + BattleMap.CELL_SIZE / 2;
         float dst = harvester.getPosition().dst(x, y);
@@ -66,13 +84,22 @@ public class AiLogic extends BaseLogic {
     }
     
     private int[] findNearestResource(Harvester harvester) {
-//      int[] nearestResource = new int[2];
-//      float minDst = 10000000.0f;
-//      for (int i = 0; i < BattleMap.COLUMNS_COUNT; i++) {
-//        for (int j = 0; j < BattleMap.ROWS_COUNT) {
-//          
-//        }
-//      }
+      int[] nearestResource = null;
+      float minDst = 10000000.0f;
+      for (int i = 0; i < BattleMap.COLUMNS_COUNT; i++) {
+        for (int j = 0; j < BattleMap.ROWS_COUNT; j++) {
+          int[] resource = new int[] {i, j};
+          if (isResourceOccupied(resource) || harvestTable.containsValue(resource)) continue;
+          float x = resource[0] * BattleMap.CELL_SIZE + BattleMap.CELL_SIZE / 2;
+          float y = resource[1] * BattleMap.CELL_SIZE + BattleMap.CELL_SIZE / 2;
+          float dst = harvester.getPosition().dst(x, y);
+          if (minDst > dst) {
+            nearestResource = resource;
+            minDst = dst;
+          }
+        }
+      }
+      return nearestResource;
     }
     
     private boolean isResourceOccupied(int[] resourcePosition) {
