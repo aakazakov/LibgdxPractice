@@ -1,12 +1,9 @@
 package com.dune.game.core.user_logic;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
+import com.badlogic.gdx.math.Vector2;
 import com.dune.game.core.BattleMap;
 import com.dune.game.core.GameController;
 import com.dune.game.core.units.AbstractUnit;
@@ -17,102 +14,91 @@ import com.dune.game.core.units.types.UnitType;
 
 public class AiLogic extends BaseLogic {
   private class ResourceFinder {
-    Map<Harvester, int[]> harvestTable;
-    
-    public ResourceFinder() {
-      harvestTable = new HashMap<>();
-    }
     
     public void go() {
-      harvestTable.clear();
+      Vector2 resource = getFirstAvailableResource();
       
-      if (!tmpAiHarvesters.isEmpty()) {
-        for (int i = 0; i < tmpAiHarvesters.size(); i++) {
-          int[] resource = getFirstAvailableResource();     
-          finedPair(resource);
-        }
-      }
+      Harvester nearestHarvester = finedNearestHarvester(resource);
       
-      // FIXME hash map ??????
+      Vector2 nearestResource = finedNearestResource(nearestHarvester);
       
+      
+      Harvester nearestHarvester1 = finedNearestHarvester(nearestResource);
+      Vector2 nearestResource1 = finedNearestResource(nearestHarvester1);
+      
+      //==== logs =====
+      
+      System.out.println("resource: " + (int)resource.x / BattleMap.CELL_SIZE + " " + (int)resource.y / BattleMap.CELL_SIZE);
+      System.out.println("nearestHarvester: " + nearestHarvester.getCellX() + " " + nearestHarvester.getCellY());
+      System.out.println("nearestResource: " + (int)nearestResource.x / BattleMap.CELL_SIZE + " " + (int)nearestResource.y / BattleMap.CELL_SIZE);
+      
+      System.out.println("nearestHarvester1: " + nearestHarvester1.getCellX() + " " + nearestHarvester1.getCellY());
+      System.out.println("nearestResource1: " + (int)nearestResource1.x / BattleMap.CELL_SIZE + " " + (int)nearestResource1.y / BattleMap.CELL_SIZE);
+      System.out.println(nearestHarvester1 == nearestHarvester);
+      
+      // ==============
     }
     
-    private void finedPair(int[] reasourceCell) {
-      if (reasourceCell == null) return;
-      
-      Harvester nearestHarvester = findNearestHarvester(reasourceCell);
-      
-      if (nearestHarvester == null) return;
-      
-      int[] nearestResource = findNearestResource(nearestHarvester);
-      
-      if (Arrays.equals(reasourceCell, nearestResource)) {
-        harvestTable.put(nearestHarvester, nearestResource);
-      } else {
-        finedPair(nearestResource);
-      }
-    }
-    
-    private int[] getFirstAvailableResource() {
-      int[] resource = new int[2];
+    private Vector2 getFirstAvailableResource() {
+      Vector2 resource = new Vector2();
       for (int i = 0; i < BattleMap.COLUMNS_COUNT; i++) {
         for (int j = 0; j < BattleMap.ROWS_COUNT; j++) {
-          resource[0] = i;
-          resource[1] = j;
-          if (!isResourceOccupied(resource) && !harvestTable.containsValue(resource)) return resource;
-        }
-      }
-      return null;
-    }
-       
-    private Harvester findNearestHarvester(int[] resource) {
-      Harvester nearestHarvester = null;
-      float minDst = 10000000.0f;
-      if (tmpAiHarvesters.isEmpty()) return nearestHarvester;
-      for (int i = 0; i < tmpAiHarvesters.size(); i++) {
-        Harvester harvester = tmpAiHarvesters.get(i);
-        if (harvestTable.containsKey(harvester)) continue;
-        float x = resource[0] * BattleMap.CELL_SIZE + BattleMap.CELL_SIZE / 2;
-        float y = resource[1] * BattleMap.CELL_SIZE + BattleMap.CELL_SIZE / 2;
-        float dst = harvester.getPosition().dst(x, y);
-        if (minDst > dst) {
-          minDst = dst;
-          nearestHarvester = harvester;
-        }
-      }
-      return nearestHarvester;
-    }
-    
-    private int[] findNearestResource(Harvester harvester) {
-      int[] nearestResource = null;
-      float minDst = 10000000.0f;
-      for (int i = 0; i < BattleMap.COLUMNS_COUNT; i++) {
-        for (int j = 0; j < BattleMap.ROWS_COUNT; j++) {
-          int[] resource = new int[] {i, j};
-          if (isResourceOccupied(resource) || harvestTable.containsValue(resource)) continue;
-          float x = resource[0] * BattleMap.CELL_SIZE + BattleMap.CELL_SIZE / 2;
-          float y = resource[1] * BattleMap.CELL_SIZE + BattleMap.CELL_SIZE / 2;
-          float dst = harvester.getPosition().dst(x, y);
-          if (minDst > dst) {
-            nearestResource = resource;
-            minDst = dst;
+          if (gc.getMap().getResourceCount(i, j) > 0 && !isResourceOccupied(i, j)) {
+            resource.set(i * BattleMap.CELL_SIZE + BattleMap.CELL_SIZE / 2,
+                j * BattleMap.CELL_SIZE + BattleMap.CELL_SIZE / 2);
+            return resource;
           }
         }
       }
-      return nearestResource;
+      return resource;
     }
     
-    private boolean isResourceOccupied(int[] resourcePosition) {
+    private boolean isResourceOccupied(int cellX, int cellY) {
       List<AbstractUnit> units = gc.getUnitsController().getUnits();
       for (int i = 0; i < units.size(); i++) {
         AbstractUnit au = units.get(i);
-        if (au.getCellX() == resourcePosition[0] && au.getCellY() == resourcePosition[1]) {
+        if (au.getCellX() == cellX && au.getCellY() == cellY) {
           return true;
         }
       }
       return false;
     }
+    
+    private Harvester finedNearestHarvester(Vector2 resource) {
+      Harvester nearestHarvester = null;
+      float minDst = 1000000.0f;
+      for (int i = 0; i < tmpAiHarvesters.size(); i++) {
+        Harvester h = tmpAiHarvesters.get(i);
+        float dst = h.getPosition().dst(resource);
+        if (minDst > dst) {
+          minDst = dst;
+          nearestHarvester = h; 
+        }
+      }
+      return nearestHarvester;
+    }
+  
+    private Vector2 finedNearestResource(Harvester h) {
+      Vector2 nearestResource = new Vector2();
+      float minDst = 1000000.0f;
+      for (int i = 0; i < BattleMap.COLUMNS_COUNT; i++) {
+        for (int j = 0; j < BattleMap.ROWS_COUNT; j++) {
+          if (gc.getMap().getResourceCount(i, j) > 0 && !isResourceOccupied(i, j)) {
+            float x = i * BattleMap.CELL_SIZE + BattleMap.CELL_SIZE / 2;
+            float y = j * BattleMap.CELL_SIZE + BattleMap.CELL_SIZE / 2;
+            float dst = h.getPosition().dst(x, y);
+            if (minDst > dst) {
+              minDst = dst;
+              nearestResource.set(x, y);
+            }
+          }
+        }
+      } 
+      return nearestResource;
+    }
   }
+  
+  private ResourceFinder resourceFinder;
   
   private float timer;
 
@@ -132,6 +118,7 @@ public class AiLogic extends BaseLogic {
     this.tmpPlayerHarvesters = new ArrayList<>();
     this.tmpPlayerBattleTanks = new ArrayList<>();
     this.timer = 10000.0f;
+    this.resourceFinder = new ResourceFinder();
   }
 
   public void update(float dt) {
@@ -151,6 +138,8 @@ public class AiLogic extends BaseLogic {
 //        aiBattleTank.commandAttack(findNearestTarget(aiBattleTank, tmpPlayerBattleTanks));
 //        System.out.println(tmpPlayerBattleTanks.size());
 //      }
+      
+      resourceFinder.go();
     }
   }
 
